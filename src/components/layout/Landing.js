@@ -28,7 +28,9 @@ const Style = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    @media (max-width) {
+    @media (max-width: 1000px) {
+      top: 330px;
+      right: 50px;
     }
   }
   h2 {
