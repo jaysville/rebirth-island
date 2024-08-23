@@ -16,7 +16,7 @@ const Landing = () => {
 };
 
 const Style = styled.div`
-  height: 600px;
+  height: 700px;
   background-image: url("images/banner2.JPG");
   background-size: cover;
   background-position: center;
