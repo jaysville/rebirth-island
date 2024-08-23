@@ -1,11 +1,5 @@
 export const PRODUCTS = [
   {
-    name: "Classic Black Tee",
-    price: "$200",
-    image: "../images/product8.png",
-    soldOut: false,
-  },
-  {
     name: "Rebirth  Sleeveless",
     price: "$200",
     image: "../images/product1.png",
@@ -45,6 +39,12 @@ export const PRODUCTS = [
     name: "Cosmic Black Tee",
     price: "$200",
     image: "../images/product7.png",
+    soldOut: false,
+  },
+  {
+    name: "Classic Black Tee",
+    price: "$200",
+    image: "../images/product8.png",
     soldOut: false,
   },
   {
