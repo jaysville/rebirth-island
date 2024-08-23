@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import Nav from "./components/layout/Nav";
 import SideNav from "./components/layout/SideNav";
-import Landing from "./components/layout/Landing";
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Footer from "./components/layout/Footer";
 
 function App() {
   const [mobileView, setMobileView] = useState(false);
@@ -44,7 +46,10 @@ function App() {
           toggleSideNav(false);
         }}
       />
-      <Landing />
+      <Routes>
+        <Route path="/" exact element={<Home mobileview={mobileView} />} />
+      </Routes>
+      <Footer />
     </div>
   );
 }

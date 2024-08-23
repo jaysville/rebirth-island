@@ -60,7 +60,12 @@ const Style = styled.nav`
   display: flex;
   justify-content: space-between;
   font-size: 15px;
+  background-color: white;
+  position: fixed;
+  z-index: 1000;
+  width: 100%;
   padding: 5px;
+  top: 0;
   ul {
     display: flex;
   }
