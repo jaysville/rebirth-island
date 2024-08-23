@@ -72,6 +72,8 @@ const Style = styled.nav`
 
 const Logo = styled.img`
   width: 100px;
+  transform: ${(props) => (props.mobileview ? "scale(1.7)" : "scale(1.5)")}
+    translateX(15px);
   cursor: pointer;
 `;
 

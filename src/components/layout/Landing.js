@@ -5,7 +5,10 @@ const Landing = () => {
   return (
     <Style>
       <div>
-        <p>Welcome to the Rebirth Island</p>
+        <h2>
+          Welcome to the
+          <br /> Rebirth Island
+        </h2>
         <MainBtn>Shop Now</MainBtn>
       </div>
     </Style>
@@ -20,8 +23,18 @@ const Style = styled.div`
   position: relative;
   div {
     position: absolute;
-    top: 300px;
-    left: 100px;
+    top: 280px;
+    right: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (max-width) {
+    }
+  }
+  h2 {
+    font-family: "Matemasie", "sans-serif";
+
+    color: #fcf0ff;
   }
 `;
 
