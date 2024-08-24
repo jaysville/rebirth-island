@@ -19,7 +19,7 @@ const Product = ({ product, mobileview }) => {
     //   }}
     >
       <a href={`/product/${product.id}`}>
-        <img alt="product" src={product.image} />
+        <img alt="product" src={product.images[0]} />
         <span>{product.name}</span>
         <span>{product.price} USD</span>
       </a>

@@ -17,6 +17,7 @@ const Product = () => {
   const { id } = params;
 
   const [size, setSize] = useState("");
+  const [activeImage, setActiveImage] = useState("");
 
   const product = PRODUCTS.find((prod) => prod.id.toString() === id);
 
@@ -28,11 +29,26 @@ const Product = () => {
     if (product.sizes) {
       setSize(product.sizes[0]);
     }
+    setActiveImage(product.images[0]);
   }, [product.sizes]);
   return (
     <Style>
       <ImageContainer>
-        <img src={product.image} alt="product" />
+        <img src={activeImage} alt="product" />
+        <div>
+          {product.images.map((image, i) => {
+            return (
+              <SmallerImage
+                src={image}
+                key={i}
+                active={image === activeImage}
+                onClick={() => {
+                  setActiveImage(image);
+                }}
+              />
+            );
+          })}
+        </div>
       </ImageContainer>
       <DetailsContainer>
         <div>
@@ -110,7 +126,16 @@ const ImageContainer = styled.div`
   }
   @media (max-width: 840px) {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    div {
+      align-self: flex-start;
+    }
+  }
+  div {
+    img {
+      width: 80px;
+    }
   }
 `;
 
@@ -123,4 +148,9 @@ const SizeControl = styled.div`
   label {
     align-self: center;
   }
+`;
+
+const SmallerImage = styled.img`
+  cursor: pointer;
+  border: ${(props) => props.active && "3px solid purple"};
 `;
