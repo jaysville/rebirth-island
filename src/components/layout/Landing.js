@@ -9,14 +9,13 @@ const Landing = () => {
           Welcome to the
           <br /> Rebirth Island
         </h2>
-        <MainBtn>Shop Now</MainBtn>
+        <MainBtn type="button">Shop Now</MainBtn>
       </div>
     </Style>
   );
 };
 
 const Style = styled.div`
-  margin-top: 80px;
   height: 650px;
   background-image: url("images/banner2.JPG");
   background-size: cover;

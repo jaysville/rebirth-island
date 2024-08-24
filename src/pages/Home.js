@@ -18,7 +18,7 @@ const Home = ({ mobileview }) => {
           );
         })}
       </ProductsContainer>
-      <MainBtn>View All</MainBtn>
+      <MainBtn type="button">View All</MainBtn>
     </Style>
   );
 };

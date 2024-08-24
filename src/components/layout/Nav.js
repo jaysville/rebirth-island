@@ -4,12 +4,20 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Dropdown, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const Nav = ({ mobileview, opensidenav }) => {
   return (
     <Style>
       {mobileview && <Hamburger onClick={opensidenav} />}
-      <Logo src="images/Logo.png" alt="logo" mobileview={mobileview} />
+      <Link to="/">
+        <Logo
+          src={`${process.env.PUBLIC_URL}/images/Logo.png`}
+          alt="logo"
+          mobileview={mobileview}
+        />
+      </Link>
+
       {!mobileview && (
         <CollectionsList>
           {collectionLinks.map(({ title, href, items }, i) => {

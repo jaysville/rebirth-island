@@ -1,22 +1,30 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { MainBtn } from "./Buttons";
+import { useNavigate } from "react-router-dom";
 const Product = ({ product, mobileview }) => {
-  const [hovered, setHovered] = useState(false);
+  //   const [hovered, setHovered] = useState(false);
+  //   const navigate = useNavigate();
 
   return (
     <Style
-      onMouseEnter={() => {
-        setHovered(true);
-      }}
-      onMouseLeave={() => {
-        setHovered(false);
-      }}
+    //   onMouseEnter={() => {
+    //     setHovered(true);
+    //   }}
+    //   onMouseLeave={() => {
+    //     setHovered(false);
+    //   }}
+    //   onClick={() => {
+    //     navigate(`/product/${product.id}`);
+    //   }}
     >
-      <img alt="product" src={product.image} />
-      <span>{product.name}</span>
-      <span>{product.price} USD</span>
-      {hovered && !mobileview && <MainBtn>Quick Shop</MainBtn>}
+      <a href={`/product/${product.id}`}>
+        <img alt="product" src={product.image} />
+        <span>{product.name}</span>
+        <span>{product.price} USD</span>
+      </a>
+
+      {/* {hovered && !mobileview && <MainBtn>Quick Shop</MainBtn>} */}
     </Style>
   );
 };
@@ -27,6 +35,10 @@ const Style = styled.div`
   text-align: center;
   position: relative;
   cursor: pointer;
+  a {
+    text-decoration: none;
+    color: black;
+  }
   span {
     display: block;
     font-size: 14px;

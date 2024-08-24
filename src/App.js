@@ -4,6 +4,8 @@ import SideNav from "./components/layout/SideNav";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Footer from "./components/layout/Footer";
+import Product from "./pages/Product";
+import styled from "styled-components";
 
 function App() {
   const [mobileView, setMobileView] = useState(false);
@@ -46,12 +48,20 @@ function App() {
           toggleSideNav(false);
         }}
       />
-      <Routes>
-        <Route path="/" exact element={<Home mobileview={mobileView} />} />
-      </Routes>
+      <Container>
+        <Routes>
+          <Route path="/" element={<Home mobileview={mobileView} />} />
+          <Route path="/product/:id" element={<Product />} />
+          {/* <Route path="/test" element={<p>WHats wrong na </p>} /> */}
+        </Routes>
+      </Container>
       <Footer />
     </div>
   );
 }
 
 export default App;
+
+const Container = styled.div`
+  margin-top: 120px;
+`;
