@@ -4,9 +4,35 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Dropdown, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Badge } from "@mui/material";
 
 const Nav = ({ mobileview, opensidenav }) => {
+  const totalQuantity = useSelector((state) => state.app.totalQuantity);
+  const navigate = useNavigate();
+  const otherLinks = [
+    {
+      title: "Account",
+      icon: <AccountIcon />,
+      href: "#",
+    },
+    {
+      title: "Cart",
+      icon: (
+        <Badge
+          badgeContent={totalQuantity}
+          color="secondary"
+          sx={{ fontStyle: "normal" }}
+        >
+          <ShoppingCartOutlinedIcon />
+        </Badge>
+      ),
+      href: "/cart",
+    },
+    ,
+  ];
+
   return (
     <Style>
       {mobileview && <Hamburger onClick={opensidenav} />}
@@ -51,8 +77,15 @@ const Nav = ({ mobileview, opensidenav }) => {
             return null;
           }
           return (
-            <li key={i}>
-              {title}
+            <li
+              key={i}
+              onClick={() => {
+                navigate(href);
+              }}
+            >
+              <div>
+                <span className="title">{title}</span>
+              </div>
               <i>{icon}</i>
             </li>
           );
@@ -85,7 +118,8 @@ const Style = styled.nav`
 
 const Logo = styled.img`
   width: 100px;
-  transform: ${(props) => (props.mobileview ? "scale(1.7)" : "scale(1.5)")}
+  transform: ${(props) =>
+      props.mobileview ? "scale(1.7) " : "scale(1.5) translateY(-7px)"}
     translateX(15px);
   cursor: pointer;
 `;
@@ -100,12 +134,31 @@ const CollectionsList = styled.ul`
 
 const OtherLists = styled.ul`
   svg {
-    transform: translateY(5px) scale(0.8);
+    fill: rgba(0, 0, 0, 0.7);
+    font-size: 22px;
+    /* transform: scale(0.8); */
+  }
+
+  transform: translateX(-30px);
+  li {
+    display: flex;
+    align-items: center;
+    transform: translateY(-3px);
+    @media (max-width: 800px) {
+      transform: translateY(15px);
+    }
+    div {
+      transform: translateY(2px);
+    }
   }
 `;
 
+const AccountIcon = styled(PermIdentityIcon)`
+  transform: translateY(3px);
+`;
+
 const Hamburger = styled(MenuIcon)`
-  transform: scale(1.3) translateY(35px);
+  transform: scale(1.5) translateY(38px);
   cursor: pointer;
 `;
 
@@ -202,16 +255,4 @@ const collectionLinks = [
       },
     ],
   },
-];
-
-const otherLinks = [
-  {
-    title: "Account",
-    icon: <PermIdentityIcon />,
-  },
-  {
-    title: "Cart",
-    icon: <ShoppingCartOutlinedIcon />,
-  },
-  ,
 ];

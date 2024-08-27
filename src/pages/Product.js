@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { PRODUCTS } from "../products";
@@ -11,18 +11,60 @@ import {
   MainBtn,
   QuantityControl,
 } from "../components/ui/Buttons";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, clearItem } from "../redux/store.js/slices/appSlice";
+import AddedToCartModal from "../components/ui/addedToCartModal/AddedToCartModal";
+import Modal from "@mui/material/Modal";
 
 const Product = () => {
   const params = useParams();
   const { id } = params;
 
+  const [showCornfirmationModal, setshowConformationModal] = useState(false);
+
   const [size, setSize] = useState("");
   const [activeImage, setActiveImage] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   const product = PRODUCTS.find((prod) => prod.id.toString() === id);
 
+  const dispatch = useDispatch();
+
+  const cart = useSelector((state) => state.app.cart);
+
+  const inCart = cart.find((item) => item.id === product.id);
+
+  const handleClose = () => setshowConformationModal(false);
+  const handleClick = () => {
+    if (!inCart) {
+      dispatch(addToCart({ product, quantity, size }));
+      setshowConformationModal(true);
+      setTimeout(() => {
+        handleClose();
+      }, 850);
+    } else {
+      dispatch(clearItem(product.id));
+    }
+  };
+
+  const navigate = useNavigate();
   const handleChange = (event) => {
     setSize(event.target.value);
+  };
+
+  const incrementQty = () => {
+    setQuantity((prevQty) => prevQty + 1);
+  };
+
+  useEffect(() => {
+    console.log(quantity);
+  }, [quantity]);
+
+  const decrementQty = () => {
+    if (quantity === 1) {
+      return;
+    }
+    setQuantity((prevState) => prevState - 1);
   };
 
   useEffect(() => {
@@ -31,8 +73,18 @@ const Product = () => {
     }
     setActiveImage(product.images[0]);
   }, [product.sizes]);
+
   return (
     <Style>
+      <Modal
+        open={showCornfirmationModal}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <AddedToCartModal />
+      </Modal>
+
       <ImageContainer>
         <img src={activeImage} alt="product" />
         <div>
@@ -53,7 +105,7 @@ const Product = () => {
       <DetailsContainer>
         <div>
           <h3>{product.name}</h3>
-          <p>{product.price}</p>
+          <p>${product.price}</p>
           {product.sizes && (
             <SizeControl>
               <label>Size</label>
@@ -78,14 +130,16 @@ const Product = () => {
           <div>
             <label>Quantity</label>
             <QuantityControl>
-              <span>-</span>
-              <input type="text" value={1} readOnly />
-              <span>+</span>
+              <div onClick={decrementQty}>-</div>
+              <span>{quantity}</span>
+              <div onClick={incrementQty}>+</div>
             </QuantityControl>
           </div>
         </div>
         <br />
-        <MainBtn>Add to cart</MainBtn>
+        <MainBtn onClick={handleClick} type="submit">
+          {inCart ? "Remove from cart" : "Add to cart"}
+        </MainBtn>
         <CheckoutBtn>Buy it now</CheckoutBtn>
       </DetailsContainer>
     </Style>
@@ -119,7 +173,7 @@ const Style = styled.div`
 
 const ImageContainer = styled.div`
   img {
-    width: 420px;
+    width: 250px;
     @media (max-width: 500px) {
       width: 100%;
     }

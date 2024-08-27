@@ -1,0 +1,99 @@
+import { useSelector } from "react-redux";
+import styled from "styled-components";
+import CartItem from "../components/ui/CartItem";
+import { CheckoutBtn } from "../components/ui/Buttons";
+
+const Cart = ({ mobileview }) => {
+  const cart = useSelector((state) => state.app.cart);
+
+  return (
+    <Style>
+      <h3>Cart</h3>
+
+      {cart.length > 0 ? (
+        <>
+          <ul>
+            {cart.map((item, i) => {
+              return (
+                <li key={i}>
+                  <CartItem item={item} mobileview={mobileview} />
+                </li>
+              );
+            })}
+          </ul>
+          <CheckoutSection>
+            {!mobileview && <div />}
+            <div>
+              <table>
+                <tr>
+                  <td>Subtotal</td>
+                  <td>$500000</td>
+                </tr>
+                <tr>
+                  <td>Shipping</td>
+                  <td>Calculated at checkout</td>
+                </tr>
+                <tr className="total">
+                  <td>Total</td>
+                  <td>$50,000</td>
+                </tr>
+              </table>
+
+              <div className="btn-container">
+                <CheckoutBtn>Checkout</CheckoutBtn>
+              </div>
+            </div>
+          </CheckoutSection>
+        </>
+      ) : (
+        <p>"Cart is empty go shoppig nigga"</p>
+      )}
+    </Style>
+  );
+};
+
+const Style = styled.div`
+  padding: 40px;
+  h3 {
+    padding: 10px;
+    text-align: center;
+  }
+`;
+
+const CheckoutSection = styled.div`
+  transform: translateY(-10px);
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  table {
+    width: 100%;
+    margin: 10px;
+    tr {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px;
+    }
+    tr.total {
+      border-top: 1px solid rgba(0, 0, 0, 0.3);
+      margin-top: 20px;
+      padding: 10px 0;
+    }
+  }
+  div.btn-container {
+    display: flex;
+    justify-content: end;
+  }
+  button {
+    width: 120px;
+  }
+
+  @media (max-width: 800px) {
+    display: block;
+    button {
+      width: 100%;
+    }
+  }
+`;
+
+export default Cart;

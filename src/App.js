@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Footer from "./components/layout/Footer";
 import Product from "./pages/Product";
 import styled from "styled-components";
+import Cart from "./pages/Cart";
 
 function App() {
   const [mobileView, setMobileView] = useState(false);
@@ -52,7 +53,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home mobileview={mobileView} />} />
           <Route path="/product/:id" element={<Product />} />
-          {/* <Route path="/test" element={<p>WHats wrong na </p>} /> */}
+          <Route path="/cart" element={<Cart mobileview={mobileView} />} />
         </Routes>
       </Container>
       <Footer />

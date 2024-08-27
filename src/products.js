@@ -2,7 +2,7 @@ export const PRODUCTS = [
   {
     id: 1,
     name: "Rebirth  Sleeveless",
-    price: "$200",
+    price: 200,
     images: ["../images/product1.png", "../images/product2.png"],
     sizes: ["Large Cut"],
     soldOut: false,
@@ -11,7 +11,7 @@ export const PRODUCTS = [
   {
     id: 2,
     name: "Black Rebirth Sleeveless",
-    price: "$200",
+    price: 200,
     images: ["../images/product3.png", "../images/product4.png"],
     sizes: ["Large Cut"],
     soldOut: false,
@@ -20,7 +20,7 @@ export const PRODUCTS = [
   {
     id: 3,
     name: "Cosmic Rebirth Tee",
-    price: "$200",
+    price: 200,
     images: ["../images/product5.png", "../images/product6.png"],
     sizes: ["M", "L", "XL"],
     soldOut: false,
@@ -28,7 +28,7 @@ export const PRODUCTS = [
   //   {
   //     id: 5,
   //     name: "Classic Plain Tee",
-  //     price: "$200",
+  //     price: 200,
   //     images: [],
   //     sizes: ["M", "L", "XL"],
   //     soldOut: false,
@@ -36,7 +36,7 @@ export const PRODUCTS = [
   {
     id: 4,
     name: "Cosmic Black Tee",
-    price: "$200",
+    price: 200,
     images: ["../images/product7.png", "../images/product8.png"],
     sizes: ["M", "L", "XL"],
     soldOut: false,
@@ -44,7 +44,7 @@ export const PRODUCTS = [
   //   {
   //     id: 7,
   //     name: "Classic Black Tee",
-  //     price: "$200",
+  //     price: 200,
   //     images: [],
   //     sizes: ["M", "L", "XL"],
   //     soldOut: false,
@@ -52,14 +52,14 @@ export const PRODUCTS = [
   {
     id: 5,
     name: "Rebirth Bucket-hat",
-    price: "$200",
+    price: 200,
     images: ["../images/product9.png"],
     soldOut: false,
   },
   {
     id: 6,
     name: "Rebirth Beanie",
-    price: "$200",
+    price: 200,
     images: ["../images/product10.png"],
     soldOut: true,
   },

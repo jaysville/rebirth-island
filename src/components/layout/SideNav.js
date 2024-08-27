@@ -4,14 +4,18 @@ import { CloseOutlined } from "@ant-design/icons";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Menu } from "antd";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import { useSelector } from "react-redux";
 
 const SideNav = ({ opensidenav, closesidenav }) => {
+  const totalQuantity = useSelector((state) => state.app.totalQuantity);
+
   return (
     <Drawer open={opensidenav} onClose={closesidenav}>
       <Container>
         <Close onClick={closesidenav} />
         <CartLink>
-          <span>Cart</span> <ShoppingCartOutlinedIcon />
+          <span>Cart ({totalQuantity} Item(s))</span>{" "}
+          <ShoppingCartOutlinedIcon />
         </CartLink>
         <Menu
           onClick={() => {
