@@ -4,18 +4,31 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Dropdown, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Badge } from "@mui/material";
+import { useEffect, useState } from "react";
 
-const Nav = ({ mobileview, opensidenav }) => {
+const Nav = ({ mobileview, opensidenav, opencartmodal }) => {
+  const [onCartPage, setOnCartPage] = useState(false);
   const totalQuantity = useSelector((state) => state.app.totalQuantity);
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/cart") {
+      setOnCartPage(true);
+    } else {
+      setOnCartPage(false);
+    }
+  }, [location]);
+
   const otherLinks = [
     {
       title: "Account",
       icon: <AccountIcon />,
-      href: "#",
+      onClick: () => {},
     },
     {
       title: "Cart",
@@ -28,7 +41,15 @@ const Nav = ({ mobileview, opensidenav }) => {
           <ShoppingCartOutlinedIcon />
         </Badge>
       ),
-      href: "/cart",
+      onClick: () => {
+        if (!mobileview && !onCartPage) {
+          opencartmodal();
+        } else if (!mobileview && onCartPage) {
+          navigate("/cart");
+        } else {
+          navigate("/cart");
+        }
+      },
     },
     ,
   ];
@@ -36,14 +57,13 @@ const Nav = ({ mobileview, opensidenav }) => {
   return (
     <Style>
       {mobileview && <Hamburger onClick={opensidenav} />}
-      <Link to="/">
+      <a href="/">
         <Logo
           src={`${process.env.PUBLIC_URL}/images/Logo.png`}
           alt="logo"
           mobileview={mobileview}
         />
-      </Link>
-
+      </a>
       {!mobileview && (
         <CollectionsList>
           {collectionLinks.map(({ title, href, items }, i) => {
@@ -70,19 +90,14 @@ const Nav = ({ mobileview, opensidenav }) => {
         </CollectionsList>
       )}
       <OtherLists mobileview={mobileview}>
-        {otherLinks.map(({ title, icon, href }, i) => {
+        {otherLinks.map(({ title, icon, onClick }, i) => {
           const indexToExclude = 0;
 
           if (mobileview && i === indexToExclude) {
             return null;
           }
           return (
-            <li
-              key={i}
-              onClick={() => {
-                navigate(href);
-              }}
-            >
+            <li key={i} onClick={onClick}>
               <div>
                 <span className="title">{title}</span>
               </div>
@@ -119,8 +134,9 @@ const Style = styled.nav`
 const Logo = styled.img`
   width: 100px;
   transform: ${(props) =>
-      props.mobileview ? "scale(1.7) " : "scale(1.5) translateY(-7px)"}
-    translateX(15px);
+    props.mobileview
+      ? "scale(1.7) translateX(5px) "
+      : "scale(1.6)  translateX(20px) "};
   cursor: pointer;
 `;
 
@@ -158,7 +174,7 @@ const AccountIcon = styled(PermIdentityIcon)`
 `;
 
 const Hamburger = styled(MenuIcon)`
-  transform: scale(1.5) translateY(38px);
+  transform: scale(1.5) translateY(38px) translateX(10px);
   cursor: pointer;
 `;
 

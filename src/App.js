@@ -7,14 +7,20 @@ import Footer from "./components/layout/Footer";
 import Product from "./pages/Product";
 import styled from "styled-components";
 import Cart from "./pages/Cart";
+import CartModal from "./components/ui/CartModal";
 
 function App() {
   const [mobileView, setMobileView] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [openSideNav, setOpenSideNav] = useState(false);
+  const [showCartModal, setShowCartModal] = useState(false);
 
   const toggleSideNav = (newState) => {
     setOpenSideNav(newState);
+  };
+
+  const toggleShowCartModal = (newState) => {
+    setShowCartModal(newState);
   };
 
   useEffect(() => {
@@ -42,12 +48,21 @@ function App() {
         opensidenav={() => {
           toggleSideNav(true);
         }}
+        opencartmodal={() => {
+          toggleShowCartModal(true);
+        }}
       />
       <SideNav
         opensidenav={openSideNav}
         closesidenav={() => {
           toggleSideNav(false);
         }}
+      />
+      <CartModal
+        closecartmodal={() => {
+          toggleShowCartModal(false);
+        }}
+        isopen={showCartModal}
       />
       <Container>
         <Routes>

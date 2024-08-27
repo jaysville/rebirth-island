@@ -56,10 +56,6 @@ const Product = () => {
     setQuantity((prevQty) => prevQty + 1);
   };
 
-  useEffect(() => {
-    console.log(quantity);
-  }, [quantity]);
-
   const decrementQty = () => {
     if (quantity === 1) {
       return;
@@ -70,6 +66,8 @@ const Product = () => {
   useEffect(() => {
     if (product.sizes) {
       setSize(product.sizes[0]);
+    } else {
+      setSize("N/A");
     }
     setActiveImage(product.images[0]);
   }, [product.sizes]);

@@ -6,8 +6,14 @@ import { CheckoutBtn } from "../components/ui/Buttons";
 const Cart = ({ mobileview }) => {
   const cart = useSelector((state) => state.app.cart);
 
+  const totalPrice = cart
+    .reduce((acc, item) => {
+      return acc + item.price * item.quantity;
+    }, 0)
+    .toFixed(2);
+
   return (
-    <Style>
+    <CartStyle>
       <h3>Cart</h3>
 
       {cart.length > 0 ? (
@@ -27,7 +33,7 @@ const Cart = ({ mobileview }) => {
               <table>
                 <tr>
                   <td>Subtotal</td>
-                  <td>$500000</td>
+                  <td>${totalPrice}</td>
                 </tr>
                 <tr>
                   <td>Shipping</td>
@@ -35,7 +41,7 @@ const Cart = ({ mobileview }) => {
                 </tr>
                 <tr className="total">
                   <td>Total</td>
-                  <td>$50,000</td>
+                  <td>${totalPrice}</td>
                 </tr>
               </table>
 
@@ -48,11 +54,11 @@ const Cart = ({ mobileview }) => {
       ) : (
         <p>"Cart is empty go shoppig nigga"</p>
       )}
-    </Style>
+    </CartStyle>
   );
 };
 
-const Style = styled.div`
+export const CartStyle = styled.div`
   padding: 40px;
   h3 {
     padding: 10px;
@@ -60,7 +66,7 @@ const Style = styled.div`
   }
 `;
 
-const CheckoutSection = styled.div`
+export const CheckoutSection = styled.div`
   transform: translateY(-10px);
   border-top: 1px solid rgba(0, 0, 0, 0.3);
   display: grid;
@@ -68,16 +74,21 @@ const CheckoutSection = styled.div`
 
   table {
     width: 100%;
-    margin: 10px;
+
     tr {
       display: flex;
       justify-content: space-between;
-      margin: 10px;
+      margin: 10px 0;
     }
     tr.total {
       border-top: 1px solid rgba(0, 0, 0, 0.3);
       margin-top: 20px;
-      padding: 10px 0;
+      padding-top: 10px;
+    }
+    @media (max-width: 800px) {
+      table: {
+        margin: 0;
+      }
     }
   }
   div.btn-container {
@@ -90,6 +101,7 @@ const CheckoutSection = styled.div`
 
   @media (max-width: 800px) {
     display: block;
+
     button {
       width: 100%;
     }

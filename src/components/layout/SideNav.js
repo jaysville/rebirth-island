@@ -13,10 +13,12 @@ const SideNav = ({ opensidenav, closesidenav }) => {
     <Drawer open={opensidenav} onClose={closesidenav}>
       <Container>
         <Close onClick={closesidenav} />
-        <CartLink>
-          <span>Cart ({totalQuantity} Item(s))</span>{" "}
-          <ShoppingCartOutlinedIcon />
-        </CartLink>
+        <a href="/cart">
+          <CartLink>
+            <span>Cart ({totalQuantity} Item(s))</span>{" "}
+            <ShoppingCartOutlinedIcon />
+          </CartLink>
+        </a>
         <Menu
           onClick={() => {
             console.log("hi");
@@ -57,6 +59,9 @@ const CartLink = styled.div`
   margin: 50px 0;
   svg {
     transform: scale(0.8);
+  }
+  span {
+    transform: translateY(3px);
   }
 `;
 

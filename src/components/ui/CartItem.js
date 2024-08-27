@@ -12,6 +12,7 @@ import { CloseOutlined } from "@ant-design/icons";
 
 const CartItem = ({ item, mobileview }) => {
   const totalPrice = item.price * item.quantity;
+
   const dispatch = useDispatch();
 
   const handleRemoveFromCart = () => {
@@ -32,7 +33,7 @@ const CartItem = ({ item, mobileview }) => {
         <img src={item.images[0]} alt="product" />
         <div>
           <span>{item.name}</span>
-          <span>${item.price}</span>
+          <span>${item.price.toFixed(2)}</span>
           <span>Size: {item.size}</span>
         </div>
       </ProductDetails>
@@ -42,7 +43,7 @@ const CartItem = ({ item, mobileview }) => {
           <span>{item.quantity}</span>
           <div onClick={handleAddToCart}> +</div>
         </CartQuantityControl>
-        <div>${totalPrice}</div>
+        <div>${totalPrice.toFixed(2)}</div>
       </CartControl>
     </Style>
   );
@@ -53,7 +54,7 @@ export default CartItem;
 const Style = styled.div`
   position: relative;
   display: grid;
-
+  padding-top: 30px;
   grid-template-columns: ${(props) =>
     props.mobileview ? "repeat(1,1fr)" : "repeat(2, 1fr)"};
 
@@ -75,6 +76,9 @@ const ProductDetails = styled.div`
     flex-direction: column;
     place-self: center start;
   }
+  span {
+    margin: 5px 0;
+  }
 `;
 const CartControl = styled.div`
   display: grid;
@@ -85,8 +89,8 @@ const CartControl = styled.div`
 
 const Clear = styled(CloseOutlined)`
   position: absolute;
-  right: 20px;
-  top: 20px;
+  right: 10px;
+  top: 10px;
   cursor: pointer;
 `;
 
