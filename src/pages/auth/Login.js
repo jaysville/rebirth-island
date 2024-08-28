@@ -35,6 +35,7 @@ const Style = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 10px;
+  margin-bottom: 150px;
   h3 {
     text-align: center;
   }
