@@ -25,7 +25,7 @@ export const QuantityControl = styled.div`
   }
 `;
 
-export const CheckoutBtn = styled.button`
+export const AltBtn = styled.button`
   background-color: black;
   color: aliceblue;
   border: none;

@@ -23,20 +23,26 @@ const Style = styled.div`
   position: relative;
   div {
     position: absolute;
-    top: 280px;
-    right: 80px;
+    top: 150px;
+    left: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
     @media (max-width: 1000px) {
-      top: 330px;
-      right: 50px;
+      top: 220px;
+      left: 50px;
+      h2 {
+        font-size: 30px;
+      }
     }
   }
   h2 {
-    font-family: "Matemasie", "sans-serif";
-
+    font-family: "Dancing Script", cursive, "Sans Serif";
     color: #fcf0ff;
+    font-size: 50px;
+    @media (max-width: 600px) {
+      color: #d994d7;
+    }
   }
 `;
 

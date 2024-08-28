@@ -26,10 +26,12 @@ const SideNav = ({ opensidenav, closesidenav }) => {
           mode="inline"
           items={items}
         />
-        <AuthLink>
-          <PersonOutlineOutlinedIcon />
-          <span>Login/Create Account</span>
-        </AuthLink>
+        <a href="/login">
+          <AuthLink>
+            <PersonOutlineOutlinedIcon />
+            <span>Login/Create Account</span>
+          </AuthLink>
+        </a>
       </Container>
     </Drawer>
   );

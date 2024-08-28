@@ -4,31 +4,21 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Dropdown, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Badge } from "@mui/material";
-import { useEffect, useState } from "react";
 
 const Nav = ({ mobileview, opensidenav, opencartmodal }) => {
-  const [onCartPage, setOnCartPage] = useState(false);
   const totalQuantity = useSelector((state) => state.app.totalQuantity);
   const navigate = useNavigate();
-
-  const location = useLocation();
-
-  useEffect(() => {
-    if (location.pathname === "/cart") {
-      setOnCartPage(true);
-    } else {
-      setOnCartPage(false);
-    }
-  }, [location]);
 
   const otherLinks = [
     {
       title: "Account",
       icon: <AccountIcon />,
-      onClick: () => {},
+      onClick: () => {
+        navigate("/login");
+      },
     },
     {
       title: "Cart",
@@ -42,13 +32,7 @@ const Nav = ({ mobileview, opensidenav, opencartmodal }) => {
         </Badge>
       ),
       onClick: () => {
-        if (!mobileview && !onCartPage) {
-          opencartmodal();
-        } else if (!mobileview && onCartPage) {
-          navigate("/cart");
-        } else {
-          navigate("/cart");
-        }
+        opencartmodal();
       },
     },
     ,

@@ -6,11 +6,7 @@ import { PRODUCTS } from "../products";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import {
-  CheckoutBtn,
-  MainBtn,
-  QuantityControl,
-} from "../components/ui/Buttons";
+import { AltBtn, MainBtn, QuantityControl } from "../components/ui/Buttons";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, clearItem } from "../redux/store.js/slices/appSlice";
 import AddedToCartModal from "../components/ui/addedToCartModal/AddedToCartModal";
@@ -138,7 +134,7 @@ const Product = () => {
         <MainBtn onClick={handleClick} type="submit">
           {inCart ? "Remove from cart" : "Add to cart"}
         </MainBtn>
-        <CheckoutBtn>Buy it now</CheckoutBtn>
+        <AltBtn>Buy it now</AltBtn>
       </DetailsContainer>
     </Style>
   );
@@ -164,6 +160,7 @@ const Style = styled.div`
     display: block;
     border-radius: 4px;
     margin: 10px auto;
+
     width: 100%;
     cursor: pointer;
   }

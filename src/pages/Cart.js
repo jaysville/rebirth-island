@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import CartItem from "../components/ui/CartItem";
-import { CheckoutBtn } from "../components/ui/Buttons";
+import { AltBtn } from "../components/ui/Buttons";
 
 const Cart = ({ mobileview }) => {
   const cart = useSelector((state) => state.app.cart);
@@ -46,23 +46,27 @@ const Cart = ({ mobileview }) => {
               </table>
 
               <div className="btn-container">
-                <CheckoutBtn>Checkout</CheckoutBtn>
+                <AltBtn>Checkout</AltBtn>
               </div>
             </div>
           </CheckoutSection>
         </>
       ) : (
-        <p>"Cart is empty go shoppig nigga"</p>
+        <p>No item added yet.</p>
       )}
     </CartStyle>
   );
 };
 
 export const CartStyle = styled.div`
-  padding: 40px;
+  padding: 30px;
   h3 {
     padding: 10px;
     text-align: center;
+  }
+  p {
+    text-align: center;
+    margin-bottom: 132px;
   }
 `;
 

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { CartStyle } from "../../pages/Cart";
 import CartItem from "./CartItem";
-import { CheckoutBtn, MainBtn } from "./Buttons";
+import { AltBtn, MainBtn } from "./Buttons";
 import { useNavigate } from "react-router-dom";
 
 const CartModal = ({ isopen, closecartmodal }) => {
@@ -59,7 +59,7 @@ const CartModal = ({ isopen, closecartmodal }) => {
                     >
                       View Cart
                     </MainBtn>
-                    <CheckoutBtn>Checkout</CheckoutBtn>
+                    <AltBtn>Checkout</AltBtn>
                   </div>
                 </div>
               </CheckoutSection>
@@ -76,7 +76,7 @@ const CartModal = ({ isopen, closecartmodal }) => {
 export default CartModal;
 
 const Container = styled.div`
-  width: 400px;
+  width: 370px;
   img {
     width: 85px;
   }

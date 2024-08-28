@@ -31,6 +31,7 @@ const Style = styled.div`
   }
   button {
     align-self: center;
+    margin-top: 20px;
   }
 `;
 

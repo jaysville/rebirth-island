@@ -8,6 +8,8 @@ import Product from "./pages/Product";
 import styled from "styled-components";
 import Cart from "./pages/Cart";
 import CartModal from "./components/ui/CartModal";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 
 function App() {
   const [mobileView, setMobileView] = useState(false);
@@ -69,6 +71,8 @@ function App() {
           <Route path="/" element={<Home mobileview={mobileView} />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart mobileview={mobileView} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </Container>
       <Footer />
