@@ -38,6 +38,12 @@ const Style = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 10px;
+  form {
+    width: 400px;
+    @media (max-width: 460px) {
+      width: 100%;
+    }
+  }
   h3 {
     text-align: center;
   }

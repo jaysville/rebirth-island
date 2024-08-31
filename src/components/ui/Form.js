@@ -1,15 +1,12 @@
 import styled from "styled-components";
 
 const Form = styled.form`
-  width: 400px;
-  @media (max-width: 460px) {
-    width: 100%;
-  }
   input {
     width: 100%;
     height: 40px;
-    border: 1px solid;
+    /* border: 1px solid; */
     outline: none;
+    padding: 5px;
     box-sizing: border-box;
   }
   label {

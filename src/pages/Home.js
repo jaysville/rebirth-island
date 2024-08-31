@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Landing from "../components/layout/Landing";
-import { PRODUCTS } from "../products";
+import { PRODUCTS } from "../data";
 import Product from "../components/ui/Product";
 import { MainBtn } from "../components/ui/Buttons";
 

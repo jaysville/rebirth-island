@@ -52,5 +52,6 @@ const Style = styled.div`
   }
   img {
     width: 180px;
+    height: 180px;
   }
 `;

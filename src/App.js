@@ -10,6 +10,7 @@ import Cart from "./pages/Cart";
 import CartModal from "./components/ui/CartModal";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import Checkout from "./pages/Checkout";
 
 function App() {
   const [mobileView, setMobileView] = useState(false);
@@ -31,7 +32,7 @@ function App() {
     };
     window.addEventListener("resize", handleResize);
 
-    if (windowWidth <= 800) {
+    if (windowWidth <= 900) {
       setMobileView(true);
     } else {
       setMobileView(false);
@@ -73,6 +74,10 @@ function App() {
           <Route path="/cart" element={<Cart mobileview={mobileView} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/checkout"
+            element={<Checkout mobileview={mobileView} />}
+          />
         </Routes>
       </Container>
       <Footer />

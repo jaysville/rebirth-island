@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { PRODUCTS } from "../products";
+import { PRODUCTS } from "../data";
 
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";

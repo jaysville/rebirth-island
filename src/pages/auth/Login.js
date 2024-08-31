@@ -36,6 +36,12 @@ const Style = styled.div`
   align-items: center;
   padding: 10px;
   margin-bottom: 150px;
+  form {
+    width: 400px;
+    @media (max-width: 460px) {
+      width: 100%;
+    }
+  }
   h3 {
     text-align: center;
   }

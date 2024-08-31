@@ -4,13 +4,25 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Dropdown, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Badge } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const Nav = ({ mobileview, opensidenav, opencartmodal }) => {
   const totalQuantity = useSelector((state) => state.app.totalQuantity);
   const navigate = useNavigate();
+  const [onCheckoutPage, setOnCheckoutPage] = useState(false);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/checkout") {
+      setOnCheckoutPage(true);
+    } else {
+      setOnCheckoutPage(false);
+    }
+  }, [location]);
 
   const otherLinks = [
     {
@@ -24,7 +36,7 @@ const Nav = ({ mobileview, opensidenav, opencartmodal }) => {
       title: "Cart",
       icon: (
         <Badge
-          badgeContent={totalQuantity}
+          badgeContent={onCheckoutPage ? 0 : totalQuantity}
           color="secondary"
           sx={{ fontStyle: "normal" }}
         >
@@ -40,7 +52,7 @@ const Nav = ({ mobileview, opensidenav, opencartmodal }) => {
 
   return (
     <Style>
-      {mobileview && <Hamburger onClick={opensidenav} />}
+      {mobileview && !onCheckoutPage && <Hamburger onClick={opensidenav} />}
       <a href="/">
         <Logo
           src={`${process.env.PUBLIC_URL}/images/Logo.png`}
@@ -50,34 +62,35 @@ const Nav = ({ mobileview, opensidenav, opencartmodal }) => {
       </a>
       {!mobileview && (
         <CollectionsList>
-          {collectionLinks.map(({ title, href, items }, i) => {
-            return (
-              <li key={i}>
-                {items ? (
-                  <Dropdown
-                    menu={{
-                      items,
-                    }}
-                  >
-                    <a onClick={(e) => e.preventDefault()}>
-                      <Space>
-                        {title} <DownOutlined />
-                      </Space>
-                    </a>
-                  </Dropdown>
-                ) : (
-                  <a>{title}</a>
-                )}
-              </li>
-            );
-          })}
+          {!onCheckoutPage &&
+            collectionLinks.map(({ title, href, items }, i) => {
+              return (
+                <li key={i}>
+                  {items ? (
+                    <Dropdown
+                      menu={{
+                        items,
+                      }}
+                    >
+                      <a onClick={(e) => e.preventDefault()}>
+                        <Space>
+                          {title} <DownOutlined />
+                        </Space>
+                      </a>
+                    </Dropdown>
+                  ) : (
+                    <a>{title}</a>
+                  )}
+                </li>
+              );
+            })}
         </CollectionsList>
       )}
       <OtherLists mobileview={mobileview}>
         {otherLinks.map(({ title, icon, onClick }, i) => {
           const indexToExclude = 0;
 
-          if (mobileview && i === indexToExclude) {
+          if ((mobileview || onCheckoutPage) && i === indexToExclude) {
             return null;
           }
           return (

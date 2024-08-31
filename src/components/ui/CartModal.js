@@ -20,6 +20,7 @@ const CartModal = ({ isopen, closecartmodal }) => {
   return (
     <Drawer open={isopen} onClose={closecartmodal} anchor="right">
       <Container>
+        <CloseOutlined onClick={closecartmodal} />
         <CartStyle>
           <h3>Cart</h3>
           {cart.length > 0 ? (
@@ -59,13 +60,20 @@ const CartModal = ({ isopen, closecartmodal }) => {
                     >
                       View Cart
                     </MainBtn>
-                    <AltBtn>Checkout</AltBtn>
+                    <AltBtn
+                      onClick={() => {
+                        navigate("/checkout");
+                        closecartmodal();
+                      }}
+                    >
+                      Checkout
+                    </AltBtn>
                   </div>
                 </div>
               </CheckoutSection>
             </>
           ) : (
-            <p>"Cart is empty go shoppig nigga"</p>
+            <p>No item added yet.</p>
           )}
         </CartStyle>
       </Container>
@@ -77,6 +85,16 @@ export default CartModal;
 
 const Container = styled.div`
   width: 370px;
+  position: relative;
+  p {
+    text-align: center;
+    margin-bottom: 132px;
+  }
+  svg {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+  }
   img {
     width: 85px;
   }
