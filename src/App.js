@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Nav from "./components/layout/Nav";
 import SideNav from "./components/layout/SideNav";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Footer from "./components/layout/Footer";
 import Product from "./pages/Product";
@@ -11,13 +11,32 @@ import CartModal from "./components/ui/CartModal";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Checkout from "./pages/Checkout";
+import { useDispatch, useSelector } from "react-redux";
+import { Modal } from "antd";
+import { logout } from "./redux/store.js/slices/appSlice";
+import AddMerch from "./pages/admin/AddMerch";
+import EditMerch from "./pages/admin/EditMerch";
 
 function App() {
   const [mobileView, setMobileView] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [openSideNav, setOpenSideNav] = useState(false);
   const [showCartModal, setShowCartModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
+  const dispatch = useDispatch();
+
+  const handleOk = () => {
+    setShowLogoutModal(false);
+    dispatch(logout());
+  };
+
+  const handleCancel = () => {
+    setShowLogoutModal(false);
+  };
+
+  const token = useSelector((state) => state.app.token);
+  const isAdmin = useSelector((state) => state.app.isAdmin);
   const toggleSideNav = (newState) => {
     setOpenSideNav(newState);
   };
@@ -43,7 +62,6 @@ function App() {
     };
   }, [windowWidth]);
 
-  ////
   return (
     <div>
       <Nav
@@ -54,13 +72,27 @@ function App() {
         opencartmodal={() => {
           toggleShowCartModal(true);
         }}
+        openlogoutmodal={() => {
+          setShowLogoutModal(true);
+        }}
       />
       <SideNav
         opensidenav={openSideNav}
         closesidenav={() => {
           toggleSideNav(false);
         }}
+        openlogoutmodal={() => {
+          setShowLogoutModal(true);
+        }}
       />
+      <Modal
+        title="Confirm Logout"
+        open={showLogoutModal}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        Are you sure you want to Logout?
+      </Modal>
       <CartModal
         closecartmodal={() => {
           toggleShowCartModal(false);
@@ -70,13 +102,50 @@ function App() {
       <Container>
         <Routes>
           <Route path="/" element={<Home mobileview={mobileView} />} />
-          <Route path="/product/:id" element={<Product />} />
-          <Route path="/cart" element={<Cart mobileview={mobileView} />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/add-merch"
+            element={
+              isAdmin ? (
+                <AddMerch mobileview={mobileView} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/edit-merch/:id"
+            element={
+              isAdmin ? (
+                <EditMerch mobileview={mobileView} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route path="/merch/:id" element={<Product />} />
+          <Route
+            path="/cart"
+            element={
+              !isAdmin ? <Cart mobileview={mobileView} /> : <Navigate to="/" />
+            }
+          />
+          <Route
+            path="/login"
+            element={token ? <Navigate to="/" /> : <Login />}
+          />
+          <Route
+            path="/register"
+            element={token ? <Navigate to="/" /> : <Register />}
+          />
           <Route
             path="/checkout"
-            element={<Checkout mobileview={mobileView} />}
+            element={
+              !isAdmin ? (
+                <Checkout mobileview={mobileView} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
         </Routes>
       </Container>

@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { MainBtn } from "../ui/Buttons";
+import { useSelector } from "react-redux";
 
 const Landing = () => {
+  const isAdmin = useSelector((state) => state.app.isAdmin);
   return (
     <Style>
       <div>
@@ -9,7 +11,7 @@ const Landing = () => {
           Welcome to the
           <br /> Rebirth Island
         </h2>
-        <MainBtn type="button">Shop Now</MainBtn>
+        {!isAdmin && <MainBtn type="button">Shop Now</MainBtn>}
       </div>
     </Style>
   );

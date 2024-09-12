@@ -16,7 +16,7 @@ const CartItem = ({ item, mobileview }) => {
   const dispatch = useDispatch();
 
   const handleRemoveFromCart = () => {
-    dispatch(removeFromCart(item.id));
+    dispatch(removeFromCart({ id: item._id, size: item.size }));
   };
 
   const handleAddToCart = () => {
@@ -24,7 +24,7 @@ const CartItem = ({ item, mobileview }) => {
   };
 
   const handleClearItem = () => {
-    dispatch(clearItem(item.id));
+    dispatch(clearItem({ id: item._id, size: item.size }));
   };
   return (
     <Style mobileview={mobileview}>

@@ -1,24 +1,33 @@
 import styled from "styled-components";
 import Landing from "../components/layout/Landing";
-import { PRODUCTS } from "../data";
 import Product from "../components/ui/Product";
 import { MainBtn } from "../components/ui/Buttons";
+import { useGetMerchQuery } from "../redux/api/merchApi";
+import { Spin } from "antd";
 
 const Home = ({ mobileview }) => {
+  const { data: Merch, isLoading, isSuccess } = useGetMerchQuery();
+
   return (
     <Style>
       <Landing />
       <h3>BestSellers</h3>
       <ProductsContainer>
-        {PRODUCTS.map((product, i) => {
-          return (
-            <li key={i}>
-              <Product product={product} mobileview={mobileview} />
-            </li>
-          );
-        })}
+        {isLoading ? (
+          <Spin />
+        ) : isSuccess ? (
+          Merch.map((merch, i) => {
+            return (
+              <li key={i}>
+                <Product product={merch} mobileview={mobileview} />
+              </li>
+            );
+          })
+        ) : (
+          <p>Server is down :(</p>
+        )}
       </ProductsContainer>
-      <MainBtn type="button">View All</MainBtn>
+      {/* <MainBtn type="button">View All</MainBtn> */}
     </Style>
   );
 };

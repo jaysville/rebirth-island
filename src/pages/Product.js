@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { PRODUCTS } from "../data";
 
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -11,39 +10,114 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, clearItem } from "../redux/store.js/slices/appSlice";
 import AddedToCartModal from "../components/ui/addedToCartModal/AddedToCartModal";
 import Modal from "@mui/material/Modal";
+import { Modal as DeleteModal, notification } from "antd";
+import {
+  useDeleteMerchMutation,
+  useGetSingleMerchQuery,
+} from "../redux/api/merchApi";
+import { Spin } from "antd";
 
 const Product = () => {
   const params = useParams();
   const { id } = params;
+
+  const navigate = useNavigate();
 
   const [showCornfirmationModal, setshowConformationModal] = useState(false);
 
   const [size, setSize] = useState("");
   const [activeImage, setActiveImage] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [inCart, setInCart] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const product = PRODUCTS.find((prod) => prod.id.toString() === id);
+  const {
+    data: product,
+    isLoading,
+    isSuccess,
+    error,
+    isError,
+  } = useGetSingleMerchQuery(id);
 
-  const dispatch = useDispatch();
+  const [
+    deleteMerch,
+    {
+      isLoading: deleteLoading,
+      isError: deleteIsError,
+      isSuccess: deleteIsSuccess,
+      error: deleteError,
+    },
+  ] = useDeleteMerchMutation();
 
-  const cart = useSelector((state) => state.app.cart);
-
-  const inCart = cart.find((item) => item.id === product.id);
-
-  const handleClose = () => setshowConformationModal(false);
-  const handleClick = () => {
-    if (!inCart) {
-      dispatch(addToCart({ product, quantity, size }));
-      setshowConformationModal(true);
-      setTimeout(() => {
-        handleClose();
-      }, 850);
-    } else {
-      dispatch(clearItem(product.id));
-    }
+  const handleOk = () => {
+    setOpenDeleteModal(false);
+    deleteMerch(product._id);
   };
 
-  const navigate = useNavigate();
+  const handleCancel = () => {
+    setOpenDeleteModal(false);
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      if (product.sizes) {
+        setSize(product.sizes[0]);
+      } else {
+        setSize("N/A");
+      }
+      setActiveImage(product.images[0]);
+    }
+    if (isError) {
+      console.log(error);
+    }
+  }, [isSuccess, isError, error, product?.sizes]);
+
+  const dispatch = useDispatch();
+  const isAdmin = useSelector((state) => state.app.isAdmin);
+
+  // const cart = useSelector((state) => state.app.cart);
+  // const cartItemIds = useSelector((state) => state.app.cartItemIds);
+
+  // useEffect(() => {
+  //   if (isAdmin) {
+  //     setInCart(false);
+  //   } else if (product && cart) {
+  //     const itemInCart = cartItemIds.includes(product._id);
+  //     setInCart(itemInCart);
+  //   }
+  // }, [isAdmin, cart, product, cartItemIds]);
+  const handleClose = () => setshowConformationModal(false);
+
+  useEffect(() => {
+    if (deleteIsSuccess) {
+      notification.success({
+        message: "Merch deleted",
+        duration: 3,
+        placement: "bottomRight",
+      });
+      navigate("/");
+    }
+    if (deleteIsError) {
+      notification.error({
+        message: deleteError.data.error,
+        duration: 3,
+        placement: "bottomRight",
+      });
+    }
+  }, [deleteError, deleteIsError, deleteIsSuccess, navigate]);
+
+  const handleClick = () => {
+    // if (!inCart) {
+    dispatch(addToCart({ product, quantity, size }));
+    setshowConformationModal(true);
+    setTimeout(() => {
+      handleClose();
+    }, 850);
+    // } else {
+    //   dispatch(clearItem(product._id));
+    // }
+  };
+
   const handleChange = (event) => {
     setSize(event.target.value);
   };
@@ -59,15 +133,6 @@ const Product = () => {
     setQuantity((prevState) => prevState - 1);
   };
 
-  useEffect(() => {
-    if (product.sizes) {
-      setSize(product.sizes[0]);
-    } else {
-      setSize("N/A");
-    }
-    setActiveImage(product.images[0]);
-  }, [product.sizes]);
-
   return (
     <Style>
       <Modal
@@ -78,64 +143,109 @@ const Product = () => {
       >
         <AddedToCartModal />
       </Modal>
-
-      <ImageContainer>
-        <img src={activeImage} alt="product" />
-        <div>
-          {product.images.map((image, i) => {
-            return (
-              <SmallerImage
-                src={image}
-                key={i}
-                active={image === activeImage}
-                onClick={() => {
-                  setActiveImage(image);
-                }}
-              />
-            );
-          })}
-        </div>
-      </ImageContainer>
-      <DetailsContainer>
-        <div>
-          <h3>{product.name}</h3>
-          <p>${product.price}</p>
-          {product.sizes && (
-            <SizeControl>
-              <label>Size</label>
-              <FormControl sx={{ width: 220, marginLeft: "50px" }}>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={size}
-                  onChange={handleChange}
-                >
-                  {product.sizes.map((size, i) => {
-                    return (
-                      <MenuItem value={size} key={i}>
-                        {size}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </SizeControl>
-          )}
-          <div>
-            <label>Quantity</label>
-            <QuantityControl>
-              <div onClick={decrementQty}>-</div>
-              <span>{quantity}</span>
-              <div onClick={incrementQty}>+</div>
-            </QuantityControl>
-          </div>
-        </div>
-        <br />
-        <MainBtn onClick={handleClick} type="submit">
-          {inCart ? "Remove from cart" : "Add to cart"}
-        </MainBtn>
-        <AltBtn>Buy it now</AltBtn>
-      </DetailsContainer>
+      <DeleteModal
+        title="Conform Delete"
+        open={openDeleteModal}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        Are you sure you want to delete merch?
+      </DeleteModal>
+      {isLoading ? (
+        <Spin />
+      ) : isSuccess ? (
+        <>
+          {" "}
+          <ImageContainer>
+            <img src={activeImage} alt="product" />
+            <div className="small-image-container">
+              {product.images.map((image, i) => {
+                return (
+                  <SmallerImage
+                    src={image}
+                    key={i}
+                    active={image === activeImage}
+                    onClick={() => {
+                      setActiveImage(image);
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </ImageContainer>
+          <DetailsContainer>
+            <div>
+              <h3>{product.name}</h3>
+              <p>${product.price}</p>
+              {product.sizes && !isAdmin && (
+                <SizeControl>
+                  <label>Size</label>
+                  <FormControl sx={{ width: 220, marginLeft: "50px" }}>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={size}
+                      onChange={handleChange}
+                    >
+                      {product.sizes.map((size, i) => {
+                        return (
+                          <MenuItem value={size} key={i}>
+                            {size}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                </SizeControl>
+              )}
+              {!isAdmin && (
+                <div>
+                  <label>Quantity</label>
+                  <QuantityControl>
+                    <div onClick={decrementQty}>-</div>
+                    <span>{quantity}</span>
+                    <div onClick={incrementQty}>+</div>
+                  </QuantityControl>
+                </div>
+              )}
+            </div>
+            <br />
+            <MainBtn
+              onClick={
+                !isAdmin
+                  ? handleClick
+                  : () => {
+                      navigate(`/edit-merch/${product._id}`);
+                    }
+              }
+              type="submit"
+            >
+              {isAdmin
+                ? "Edit Merch"
+                : // : inCart
+                  // ? "Remove from cart"
+                  "Add to cart"}
+            </MainBtn>
+            <AltBtn
+              onClick={
+                isAdmin
+                  ? () => {
+                      setOpenDeleteModal(true);
+                    }
+                  : ""
+              }
+            >
+              {!isAdmin
+                ? "Buy it now"
+                : deleteLoading
+                ? "Deleting.."
+                : "Delete Merch"}
+            </AltBtn>
+          </DetailsContainer>
+        </>
+      ) : (
+        <p>Couldnt fetch product</p>
+      )}
     </Style>
   );
 };
@@ -168,9 +278,18 @@ const Style = styled.div`
 
 const ImageContainer = styled.div`
   img {
-    width: 250px;
+    width: 350px;
     @media (max-width: 500px) {
       width: 100%;
+    }
+  }
+
+  div.small-image-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    place-items: center;
+    @media (max-width: 410px) {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
   @media (max-width: 840px) {

@@ -12,6 +12,8 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
+import { merchApi } from "../api/merchApi";
+import { authApi } from "../api/authApi";
 
 const persistConfig = {
   key: "root",
@@ -20,13 +22,17 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, appSliceReducer);
 export const store = configureStore({
-  reducer: { app: persistedReducer },
+  reducer: {
+    app: persistedReducer,
+    [merchApi.reducerPath]: merchApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
+  },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
       serializableCheck: {
         ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    });
+    }).concat([merchApi.middleware, authApi.middleware]);
   },
 });
 

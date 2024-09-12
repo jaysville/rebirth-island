@@ -5,16 +5,21 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Dropdown, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Badge } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Logout } from "@mui/icons-material";
 
-const Nav = ({ mobileview, opensidenav, opencartmodal }) => {
+const Nav = ({ mobileview, opensidenav, opencartmodal, openlogoutmodal }) => {
   const totalQuantity = useSelector((state) => state.app.totalQuantity);
   const navigate = useNavigate();
   const [onCheckoutPage, setOnCheckoutPage] = useState(false);
 
   const location = useLocation();
+
+  const token = useSelector((state) => state.app.token);
+
+  const isAdmin = useSelector((state) => state.app.isAdmin);
 
   useEffect(() => {
     if (location.pathname === "/checkout") {
@@ -29,7 +34,14 @@ const Nav = ({ mobileview, opensidenav, opencartmodal }) => {
       title: "Account",
       icon: <AccountIcon />,
       onClick: () => {
-        navigate("/login");
+        navigate(!token ? "/login" : "/account");
+      },
+    },
+    {
+      title: "Logout",
+      icon: <LogoutIcon />,
+      onClick: () => {
+        openlogoutmodal();
       },
     },
     {
@@ -58,9 +70,10 @@ const Nav = ({ mobileview, opensidenav, opencartmodal }) => {
           src={`${process.env.PUBLIC_URL}/images/Logo.png`}
           alt="logo"
           mobileview={mobileview}
+          isAdmin={isAdmin}
         />
       </a>
-      {!mobileview && (
+      {!isAdmin && !mobileview && (
         <CollectionsList>
           {!onCheckoutPage &&
             collectionLinks.map(({ title, href, items }, i) => {
@@ -86,11 +99,27 @@ const Nav = ({ mobileview, opensidenav, opencartmodal }) => {
             })}
         </CollectionsList>
       )}
+      {isAdmin && !mobileview && (
+        <AdminContainer
+          onClick={() => {
+            navigate("/add-merch");
+          }}
+        >
+          <span>Add Merch</span>
+        </AdminContainer>
+      )}
       <OtherLists mobileview={mobileview}>
         {otherLinks.map(({ title, icon, onClick }, i) => {
-          const indexToExclude = 0;
+          const indicesToExclude = [0, 1];
 
-          if ((mobileview || onCheckoutPage) && i === indexToExclude) {
+          if ((mobileview || onCheckoutPage) && indicesToExclude.includes(i)) {
+            return null;
+          }
+          if (!token && i === 1) {
+            return null;
+          }
+
+          if (isAdmin & (i === 2 || i === 0)) {
             return null;
           }
           return (
@@ -132,11 +161,21 @@ const Logo = styled.img`
   width: 100px;
   transform: ${(props) =>
     props.mobileview
-      ? "scale(1.7) translateX(5px) "
+      ? props.isAdmin
+        ? "scale(1.7)  translateX(-10px)"
+        : "scale(1.7) translateX(5px) "
       : "scale(1.6)  translateX(20px) "};
+
   cursor: pointer;
 `;
 
+const AdminContainer = styled.div`
+  font-weight: 500;
+  /* transform: translateY(9px); */
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+`;
 const CollectionsList = styled.ul`
   font-weight: 500;
   transform: translateY(9px);
@@ -173,6 +212,10 @@ const AccountIcon = styled(PermIdentityIcon)`
 const Hamburger = styled(MenuIcon)`
   transform: scale(1.5) translateY(38px) translateX(10px);
   cursor: pointer;
+`;
+
+const LogoutIcon = styled(Logout)`
+  transform: scale(0.9) translateY(3px) translateX(2px);
 `;
 
 const collectionLinks = [
