@@ -176,7 +176,7 @@ const Product = () => {
           <DetailsContainer>
             <div>
               <h3>{product.name}</h3>
-              <p>${product.price}</p>
+              <p>₦{product.price}</p>
               {product.sizes && !isAdmin && (
                 <SizeControl>
                   <label>Size</label>
@@ -226,21 +226,15 @@ const Product = () => {
                   // ? "Remove from cart"
                   "Add to cart"}
             </MainBtn>
-            <AltBtn
-              onClick={
-                isAdmin
-                  ? () => {
-                      setOpenDeleteModal(true);
-                    }
-                  : ""
-              }
-            >
-              {!isAdmin
-                ? "Buy it now"
-                : deleteLoading
-                ? "Deleting.."
-                : "Delete Merch"}
-            </AltBtn>
+            {isAdmin && (
+              <AltBtn
+                onClick={() => {
+                  setOpenDeleteModal(true);
+                }}
+              >
+                {deleteLoading ? "Deleting.." : "Delete Merch"}
+              </AltBtn>
+            )}
           </DetailsContainer>
         </>
       ) : (

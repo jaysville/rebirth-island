@@ -39,7 +39,7 @@ const CartModal = ({ isopen, closecartmodal }) => {
                   <table>
                     <tr>
                       <td>Subtotal</td>
-                      <td>${totalPrice}</td>
+                      <td>₦{totalPrice}</td>
                     </tr>
                     <tr>
                       <td>Shipping</td>
@@ -47,7 +47,7 @@ const CartModal = ({ isopen, closecartmodal }) => {
                     </tr>
                     <tr className="total">
                       <td>Total</td>
-                      <td>${totalPrice}</td>
+                      <td>₦{totalPrice}</td>
                     </tr>
                   </table>
 

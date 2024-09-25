@@ -11,23 +11,24 @@ const Home = ({ mobileview }) => {
   return (
     <Style>
       <Landing />
-      <h3>BestSellers</h3>
-      <ProductsContainer>
-        {isLoading ? (
-          <Spin />
-        ) : isSuccess ? (
-          Merch.map((merch, i) => {
-            return (
-              <li key={i}>
-                <Product product={merch} mobileview={mobileview} />
-              </li>
-            );
-          })
-        ) : (
-          <p>Server is down :(</p>
-        )}
-      </ProductsContainer>
-      {/* <MainBtn type="button">View All</MainBtn> */}
+      <section id="shop">
+        <h3>BestSellers</h3>
+        <ProductsContainer>
+          {isLoading ? (
+            <Spin />
+          ) : isSuccess ? (
+            Merch.map((merch, i) => {
+              return (
+                <li key={i}>
+                  <Product product={merch} mobileview={mobileview} />
+                </li>
+              );
+            })
+          ) : (
+            <p>Something went wrong</p>
+          )}
+        </ProductsContainer>
+      </section>
     </Style>
   );
 };
@@ -41,6 +42,9 @@ const Style = styled.div`
   button {
     align-self: center;
     margin-top: 20px;
+  }
+  #shop {
+    margin-top: 50px;
   }
 `;
 

@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { MainBtn } from "../ui/Buttons";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
   const isAdmin = useSelector((state) => state.app.isAdmin);
+  const navigate = useNavigate();
   return (
     <Style>
       <div>
@@ -11,7 +13,11 @@ const Landing = () => {
           Welcome to the
           <br /> Rebirth Island
         </h2>
-        {!isAdmin && <MainBtn type="button">Shop Now</MainBtn>}
+        {!isAdmin && (
+          <a href="#shop">
+            <MainBtn type="button">Shop Now</MainBtn>
+          </a>
+        )}
       </div>
     </Style>
   );

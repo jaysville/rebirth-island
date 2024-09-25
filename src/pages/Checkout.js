@@ -2,23 +2,154 @@ import styled from "styled-components";
 import Form from "../components/ui/Form";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import { regions, statesInNigeria } from "../data";
+import { statesInNigeria } from "../data";
 import { MainBtn } from "../components/ui/Buttons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CheckoutItem from "../components/ui/CheckoutItem";
-import { Menu } from "antd";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePlaceOrderMutation } from "../redux/api/userApi";
+import {
+  useInitializeTransactionMutation,
+  useVerifyTransactionMutation,
+} from "../redux/api/adminApi";
+import PaystackPop from "@paystack/inline-js";
+import { useFormik, Field } from "formik";
+import { orderSchema } from "../schemas";
+import { ErrorText } from "./auth/Register";
+import { notification } from "antd";
+import { useNavigate } from "react-router-dom";
+import { clearCart } from "../redux/store.js/slices/appSlice";
 
 const Checkout = ({ mobileview }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [
+    initializeTransaction,
+    { data, isLoading, isSuccess, isError, error },
+  ] = useInitializeTransactionMutation();
+
+  const [
+    verifyTransaction,
+    {
+      data: verifyData,
+      isLoading: verificationLoading,
+      error: verificationError,
+      isError: verificationIsError,
+      isSuccess: verificationIsSuccess,
+    },
+  ] = useVerifyTransactionMutation();
+
   const cart = useSelector((state) => state.app.cart);
-  const totalPrice = cart
-    .reduce((acc, item) => {
-      return acc + item.price * item.quantity;
-    }, 0)
-    .toFixed(2);
+  const shippingPrice = 5000;
+  const totalProductPrice = cart.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
+
+  const netPrice = shippingPrice + totalProductPrice;
 
   const [showCartSummary, setShowCartSummary] = useState(false);
+
+  useEffect(() => {
+    if (isSuccess) {
+      const popup = new PaystackPop();
+
+      popup.newTransaction({
+        key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
+        email: "olaotanabarowei@gmail.com",
+        amount: netPrice * 100,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phone: values.phone,
+        onSuccess: () => {
+          verifyTransaction(data.data.reference);
+        },
+      });
+    }
+    if (isError) {
+      console.log(error);
+    }
+  }, [isSuccess, isError, error, data]);
+
+  const [
+    placeOrder,
+    {
+      isSuccess: orderSuccess,
+      isError: orderIsError,
+      error: orderError,
+
+      isLoading: orderIsLoading,
+    },
+  ] = usePlaceOrderMutation();
+
+  useEffect(() => {
+    if (verificationIsSuccess) {
+      placeOrder({
+        email: values.email,
+        phone: values.phone,
+        address: values.address,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        landmark: values.landmark,
+        city: values.city,
+        state: values.state,
+        products: cart.map(({ _id, size, quantity }) => {
+          return {
+            productId: _id,
+            size,
+            quantity,
+          };
+        }),
+        totalAmount: netPrice,
+      });
+    }
+    if (verificationError) {
+      console.log(verificationError);
+    }
+  }, [verificationError, verificationIsError, verificationIsSuccess]);
+
+  useEffect(() => {
+    if (orderSuccess) {
+      notification.success({
+        message:
+          "Thank you for shopping with Rebirth Island! Your order details will be emailed to you shortly.",
+        duration: 6,
+        placement: "bottomRight",
+      });
+      dispatch(clearCart());
+      navigate("/");
+    }
+    if (orderIsError) {
+      notification.error({
+        message: "Something went wrong.",
+        duration: 5,
+        placement: "bottomRight",
+      });
+    }
+  }, [orderSuccess, orderIsError]);
+
+  const { values, errors, handleChange, handleBlur, handleSubmit, touched } =
+    useFormik({
+      initialValues: {
+        email: "",
+        firstName: "",
+        lastName: "",
+        phone: "",
+        address: "",
+        landmark: "",
+        city: "",
+        state: "Lagos",
+      },
+      validationSchema: orderSchema,
+      onSubmit: () => {
+        console.log(values);
+        initializeTransaction({
+          key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
+          email: "olaotanabarowei@gmail.com",
+          amount: netPrice * 100,
+        });
+      },
+    });
 
   return (
     <Style mobileview={mobileview}>
@@ -35,7 +166,7 @@ const Checkout = ({ mobileview }) => {
                 {!showCartSummary && <DownOutlined />}
                 {showCartSummary && <UpOutlined />}
               </span>
-              <span className="total">${totalPrice}</span>
+              <span className="total">₦{netPrice}</span>
             </div>
             {showCartSummary && (
               <div>
@@ -48,57 +179,140 @@ const Checkout = ({ mobileview }) => {
                 <table>
                   <tr>
                     <td>Subtotal</td>
-                    <td>${totalPrice}</td>
+                    <td>₦{totalProductPrice}</td>
                   </tr>
                   <tr>
                     <td>Shipping</td>
-                    <td>FREE</td>
+                    <td>₦{shippingPrice}</td>
                   </tr>
+                  <DisaclaimerTag>
+                    Delivery Prices are subject to change, you will be contacted
+                    prior to delivery to confirm the price.
+                  </DisaclaimerTag>
                   <tr className="total">
                     <td>Total</td>
-                    <td>${totalPrice}</td>
+                    <td>₦{netPrice}</td>
                   </tr>
                 </table>
               </div>
             )}
           </div>
         )}
-        <Form>
-          <div>
-            <label>Contact</label>
-            <input type="text" placeholder="Email or mobile phone number" />
-          </div>
-          <div>
-            <label>Delivery</label>
+        <Form onSubmit={handleSubmit}>
+          <h3>Contact</h3>
+          <DoubleContainer>
             <div>
-              <TextField
-                id="outlined-select-currency"
-                select
-                label="Country/Region"
-                defaultValue="Nigeria"
-                sx={{ width: "100%" }}
-              >
-                {regions.map((option) => (
-                  <MenuItem key={option} value={option} sx={{ height: 40 }}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
+              <label>Email</label>
+              <input
+                type="email"
+                placeholder="Email"
+                name="email"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {touched.email && errors.email && (
+                <ErrorText>{errors.email}</ErrorText>
+              )}
             </div>
-            <NameContainer>
-              <input type="text" placeholder="First name" />
-              <input type="text" placeholder="Last name" />
-            </NameContainer>
             <div>
-              <input type="Address" placeholder="Address" />
+              <label>Phone Number</label>
+              <input
+                placeholder="Phone number"
+                name="phone"
+                value={values.phone}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {touched.phone && errors.phone && (
+                <ErrorText>{errors.phone}</ErrorText>
+              )}
+            </div>
+          </DoubleContainer>
+          <div>
+            <h3>Delivery</h3>
+
+            <DoubleContainer>
+              <div>
+                <label>First Name</label>
+                <input
+                  type="text"
+                  placeholder="First name"
+                  name="firstName"
+                  value={values.firstName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {touched.firstName && errors.firstName && (
+                  <ErrorText>{errors.firstName}</ErrorText>
+                )}
+              </div>
+              <div>
+                <label>Last Name</label>
+                <input
+                  type="text"
+                  placeholder="Last name"
+                  name="lastName"
+                  value={values.lastName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {touched.lastName && errors.lastName && (
+                  <ErrorText>{errors.lastName}</ErrorText>
+                )}
+              </div>
+            </DoubleContainer>
+            <div>
+              <label>Address</label>
+              <input
+                type="Address"
+                name="address"
+                placeholder="Address"
+                value={values.address}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {touched.address && errors.address && (
+                <ErrorText>{errors.address}</ErrorText>
+              )}
+            </div>
+            <div>
+              <label>Landmark</label>
+              <input
+                placeholder="A popular spot around you"
+                name="landmark"
+                value={values.landmark}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {touched.landmark && errors.landmark && (
+                <ErrorText>{errors.landmark}</ErrorText>
+              )}
             </div>
             <LocationContainer>
-              <input type="text" placeholder="City" />
+              <div>
+                <label>City</label>
+                <input
+                  type="text"
+                  placeholder="City"
+                  name="city"
+                  value={values.city}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {touched.city && errors.city && (
+                  <ErrorText>{errors.city}</ErrorText>
+                )}
+              </div>
+
               <TextField
                 select
                 label="State"
-                defaultValue="Lagos"
+                name="state"
                 sx={{ width: "100%" }}
+                value={values.state}
+                onChange={handleChange}
+                onBlur={handleBlur}
               >
                 {statesInNigeria.map((option) => (
                   <MenuItem key={option} value={option}>
@@ -108,7 +322,15 @@ const Checkout = ({ mobileview }) => {
               </TextField>
             </LocationContainer>
           </div>
-          <MainBtn>Pay Now</MainBtn>
+          <MainBtn type="submit" disabled={isLoading}>
+            {orderIsLoading
+              ? "Placing order..."
+              : verificationLoading
+              ? "Verifying payment..."
+              : isLoading
+              ? "Loading..."
+              : "Pay Now"}
+          </MainBtn>
         </Form>
       </div>
       {!mobileview && (
@@ -119,15 +341,19 @@ const Checkout = ({ mobileview }) => {
           <table>
             <tr>
               <td>Subtotal</td>
-              <td>${totalPrice}</td>
+              <td>₦{totalProductPrice}</td>
             </tr>
             <tr>
               <td>Shipping</td>
-              <td>Calculated at checkout</td>
+              <td>₦{shippingPrice}</td>
             </tr>
+            <DisaclaimerTag>
+              Delivery Prices are subject to change, you will be contacted prior
+              to delivery to confirm the price.
+            </DisaclaimerTag>
             <tr className="total">
               <td>Total</td>
-              <td>${totalPrice}</td>
+              <td>₦{netPrice}</td>
             </tr>
           </table>
         </ProductContainer>
@@ -143,6 +369,11 @@ const Style = styled.div`
   grid-template-columns: repeat(2, 1fr);
   border: 1px solid rgba(0, 0, 0, 0.3);
   margin-top: ${(props) => props.mobileview && "145px"};
+  form {
+    label {
+      font-size: 14px;
+    }
+  }
   table {
     width: 100%;
     margin-top: 20px;
@@ -207,10 +438,13 @@ const Style = styled.div`
   }
 `;
 
-const NameContainer = styled.div`
+const DoubleContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  @media (max-width: 500px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 const LocationContainer = styled.div`
@@ -220,4 +454,8 @@ const LocationContainer = styled.div`
 const ProductContainer = styled.div`
   background-color: rgb(245, 245, 245);
   padding: 30px;
+`;
+
+const DisaclaimerTag = styled.small`
+  color: #a55fa5;
 `;

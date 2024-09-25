@@ -39,14 +39,24 @@ const SideNav = ({ opensidenav, closesidenav, openlogoutmodal }) => {
                 <span>Account</span> <PermIdentity />
               </LinkContainer>
             ) : (
-              <LinkContainer
-                onClick={() => {
-                  navigate("/add-merch");
-                  closesidenav();
-                }}
-              >
-                <span>Add Merch</span>
-              </LinkContainer>
+              <>
+                <LinkContainer
+                  onClick={() => {
+                    navigate("/add-merch");
+                    closesidenav();
+                  }}
+                >
+                  <span>Add Merch</span>
+                </LinkContainer>
+                <LinkContainer
+                  onClick={() => {
+                    navigate("/orders");
+                    closesidenav();
+                  }}
+                >
+                  <span>Orders</span>
+                </LinkContainer>
+              </>
             )}
 
             <LinkContainer
@@ -135,40 +145,12 @@ const items = [
     key: "2",
 
     label: "Men",
-    children: [
-      {
-        key: "all",
-        label: "All",
-      },
-      {
-        key: "clothing",
-        label: "Clothings",
-      },
-      {
-        key: "hats",
-        label: "Hats",
-      },
-    ],
   },
   { type: "divider" },
   {
     key: "3",
 
     label: "Women",
-    children: [
-      {
-        key: "w1",
-        label: "All",
-      },
-      {
-        key: "w2",
-        label: "Clothings",
-      },
-      {
-        key: "w3",
-        label: "Hats",
-      },
-    ],
   },
   { type: "divider" },
 ];

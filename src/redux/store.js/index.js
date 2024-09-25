@@ -14,6 +14,8 @@ import {
 } from "redux-persist";
 import { merchApi } from "../api/merchApi";
 import { authApi } from "../api/authApi";
+import { userApi } from "../api/userApi";
+import { adminApi } from "../api/adminApi";
 
 const persistConfig = {
   key: "root",
@@ -26,13 +28,20 @@ export const store = configureStore({
     app: persistedReducer,
     [merchApi.reducerPath]: merchApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
+    [adminApi.reducerPath]: adminApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
       serializableCheck: {
         ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat([merchApi.middleware, authApi.middleware]);
+    }).concat([
+      merchApi.middleware,
+      authApi.middleware,
+      userApi.middleware,
+      adminApi.middleware,
+    ]);
   },
 });
 

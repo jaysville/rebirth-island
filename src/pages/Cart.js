@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import CartItem from "../components/ui/CartItem";
 import { AltBtn } from "../components/ui/Buttons";
+import { useNavigate } from "react-router-dom";
 
 const Cart = ({ mobileview }) => {
   const cart = useSelector((state) => state.app.cart);
@@ -11,6 +12,8 @@ const Cart = ({ mobileview }) => {
       return acc + item.price * item.quantity;
     }, 0)
     .toFixed(2);
+
+  const navigate = useNavigate();
 
   return (
     <CartStyle>
@@ -33,7 +36,7 @@ const Cart = ({ mobileview }) => {
               <table>
                 <tr>
                   <td>Subtotal</td>
-                  <td>${totalPrice}</td>
+                  <td>₦{totalPrice}</td>
                 </tr>
                 <tr>
                   <td>Shipping</td>
@@ -41,12 +44,18 @@ const Cart = ({ mobileview }) => {
                 </tr>
                 <tr className="total">
                   <td>Total</td>
-                  <td>${totalPrice}</td>
+                  <td>₦{totalPrice}</td>
                 </tr>
               </table>
 
               <div className="btn-container">
-                <AltBtn>Checkout</AltBtn>
+                <AltBtn
+                  onClick={() => {
+                    navigate("/checkout");
+                  }}
+                >
+                  Checkout
+                </AltBtn>
               </div>
             </div>
           </CheckoutSection>

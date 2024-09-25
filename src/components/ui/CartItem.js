@@ -33,7 +33,7 @@ const CartItem = ({ item, mobileview }) => {
         <img src={item.images[0]} alt="product" />
         <div>
           <span>{item.name}</span>
-          <span>${item.price.toFixed(2)}</span>
+          <span>₦{item.price.toFixed(2)}</span>
           <span>Size: {item.size}</span>
         </div>
       </ProductDetails>
@@ -43,7 +43,7 @@ const CartItem = ({ item, mobileview }) => {
           <span>{item.quantity}</span>
           <div onClick={handleAddToCart}> +</div>
         </CartQuantityControl>
-        <div>${totalPrice.toFixed(2)}</div>
+        <div>₦{totalPrice.toFixed(2)}</div>
       </CartControl>
     </Style>
   );

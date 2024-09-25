@@ -5,7 +5,7 @@ const Product = ({ product }) => {
       <a href={`/merch/${product._id}`}>
         <img alt="product" src={product.images[0]} />
         <span>{product.name}</span>
-        <span>${product.price} </span>
+        <span>₦{product.price} </span>
       </a>
     </Style>
   );

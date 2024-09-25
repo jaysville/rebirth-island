@@ -16,6 +16,11 @@ import { Modal } from "antd";
 import { logout } from "./redux/store.js/slices/appSlice";
 import AddMerch from "./pages/admin/AddMerch";
 import EditMerch from "./pages/admin/EditMerch";
+import AboutUs from "./pages/About-Us";
+import RefundPolicy from "./pages/Refund-Policy";
+import Contact from "./pages/Contact";
+import TOC from "./pages/TOC";
+import Orders from "./pages/admin/Orders";
 
 function App() {
   const [mobileView, setMobileView] = useState(false);
@@ -103,6 +108,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home mobileview={mobileView} />} />
           <Route
+            path="/orders"
+            element={isAdmin ? <Orders /> : <Navigate to="/" />}
+          />
+          <Route
             path="/add-merch"
             element={
               isAdmin ? (
@@ -147,6 +156,10 @@ function App() {
               )
             }
           />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="refund-policy" element={<RefundPolicy />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/terms-of-use-and-conduct" element={<TOC />} />
         </Routes>
       </Container>
       <Footer />

@@ -5,7 +5,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Dropdown, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Badge } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Logout } from "@mui/icons-material";
@@ -106,6 +106,15 @@ const Nav = ({ mobileview, opensidenav, opencartmodal, openlogoutmodal }) => {
           }}
         >
           <span>Add Merch</span>
+        </AdminContainer>
+      )}
+      {isAdmin && !mobileview && (
+        <AdminContainer
+          onClick={() => {
+            navigate("/orders");
+          }}
+        >
+          <span>Orders</span>
         </AdminContainer>
       )}
       <OtherLists mobileview={mobileview}>
@@ -226,89 +235,9 @@ const collectionLinks = [
   {
     title: "Men",
     href: "",
-    items: [
-      {
-        key: "1",
-        label: (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.antgroup.com"
-          >
-            All
-          </a>
-        ),
-      },
-      {
-        key: "2",
-        label: (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.antgroup.com"
-          >
-            Clothing
-          </a>
-        ),
-      },
-      {
-        key: "3",
-        label: (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.antgroup.com"
-          >
-            Hats
-          </a>
-        ),
-      },
-    ],
   },
   {
     title: "Women",
     href: "",
-  },
-  {
-    title: "Collection",
-    href: "",
-    items: [
-      {
-        key: "1",
-        label: (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.antgroup.com"
-          >
-            All
-          </a>
-        ),
-      },
-      {
-        key: "2",
-        label: (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.antgroup.com"
-          >
-            Clothing
-          </a>
-        ),
-      },
-      {
-        key: "3",
-        label: (
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://www.antgroup.com"
-          >
-            Hats
-          </a>
-        ),
-      },
-    ],
   },
 ];

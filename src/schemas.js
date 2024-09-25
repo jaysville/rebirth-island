@@ -29,3 +29,17 @@ export const loginSchema = yup.object({
     .required("Field is required"),
   password: yup.string().required("Field is required"),
 });
+
+export const orderSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  firstName: yup.string().required("First name is required"),
+  lastName: yup.string().required("Last name is required"),
+  phone: yup.string().required("Phone number is required"),
+  address: yup.string().required("Address is required"),
+  landmark: yup.string().required("Landmark is required"),
+  city: yup.string().required("City is required"),
+  state: yup.string().required("State is required"),
+});
