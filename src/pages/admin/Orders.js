@@ -30,9 +30,26 @@ const Orders = () => {
           {orders.map((order, i) => (
             <li key={i} className="order-list">
               <ul>
-                {Object.keys(order).map((key) => (
-                  <li key={key}>{`${key}: ${order[key]}`}</li>
-                ))}
+                {Object.keys(order).map((key) =>
+                  key !== "products" ? (
+                    <li key={key}>{`${key}: ${order[key]}`}</li>
+                  ) : (
+                    <li key={key}>
+                      <strong>Products:</strong>
+                      <ul className="products-list">
+                        {order.products.map((product, index) => (
+                          <li key={index}>
+                            {Object.keys(product).map((productKey) => (
+                              <p
+                                key={productKey}
+                              >{`${productKey}: ${product[productKey]}`}</p>
+                            ))}
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  )
+                )}
               </ul>
             </li>
           ))}
@@ -52,5 +69,8 @@ const Style = styled.div`
   }
   .order-list {
     border: 1px solid purple;
+  }
+  .products-list {
+    list-style: lower-roman;
   }
 `;
