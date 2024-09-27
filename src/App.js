@@ -190,7 +190,7 @@ const Container = styled.div`
     left: 100px;
     color: #a55fa5;
     @media (max-width: 780px) {
-      left: 50px;
+      left: 10px;
     }
   }
 `;
