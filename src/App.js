@@ -39,7 +39,7 @@ function App() {
 
   useEffect(() => {
     setCurrentPath(location.pathname);
-  }, [location.pathname]);
+  }, [location]);
 
   const handleOk = () => {
     setShowLogoutModal(false);
@@ -115,7 +115,7 @@ function App() {
         isopen={showCartModal}
       />
       <Container>
-        {currentPath !== "/" && <GoBack />}
+        {currentPath !== "/" && currentPath !== "/checkout" && <GoBack />}
         <Routes>
           <Route path="/" element={<Home mobileview={mobileView} />} />
           <Route
@@ -185,12 +185,4 @@ export default App;
 const Container = styled.div`
   margin-top: 120px;
   position: relative;
-  svg {
-    position: absolute;
-    left: 100px;
-    color: #a55fa5;
-    @media (max-width: 780px) {
-      left: 50px;
-    }
-  }
 `;

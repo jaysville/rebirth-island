@@ -34,24 +34,20 @@ const Style = styled.footer`
 
 const Links = [
   {
-    title: "Return and Refund policy",
-    link: "/refund-policy",
-  },
-  {
     title: "About Us",
     link: "/about-us",
+  },
+  {
+    title: "Terms of use and conduct",
+    link: "terms-of-use-and-conduct",
+  },
+  {
+    title: "Return and Refund policy",
+    link: "/refund-policy",
   },
 
   {
     title: "Get in Touch",
     link: "/contact",
-  },
-  // {
-  //   title: "Terms of Service",
-  //   link: "/terms-of-service",
-  // },
-  {
-    title: "Terms of use and conduct",
-    link: "terms-of-use-and-conduct",
   },
 ];

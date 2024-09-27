@@ -40,6 +40,12 @@ const Checkout = ({ mobileview }) => {
   ] = useVerifyTransactionMutation();
 
   const cart = useSelector((state) => state.app.cart);
+
+  useEffect(() => {
+    if (cart.length < 1) {
+      navigate("/");
+    }
+  }, [cart]);
   const shippingPrice = 5000;
   const totalProductPrice = cart.reduce((acc, item) => {
     return acc + item.price * item.quantity;
@@ -192,9 +198,13 @@ const Checkout = ({ mobileview }) => {
                     <td>₦{shippingPrice}</td>
                   </tr>
                   <DisaclaimerTag>
+                    Please add reachable contact information.
+                  </DisaclaimerTag>{" "}
+                  <br />
+                  <DisaclaimerTag>
                     Delivery Prices are subject to change, you will be contacted
                     prior to delivery to confirm the price.
-                  </DisaclaimerTag>
+                  </DisaclaimerTag>{" "}
                   <tr className="total">
                     <td>Total</td>
                     <td>₦{netPrice}</td>

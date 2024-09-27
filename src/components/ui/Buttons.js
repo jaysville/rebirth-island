@@ -37,8 +37,16 @@ export const AltBtn = styled.button`
 export const GoBack = () => {
   const navigate = useNavigate();
 
+  const GoBackBtn = styled(ArrowBack)`
+    position: absolute;
+    left: 100px;
+    color: #a55fa5;
+    @media (max-width: 780px) {
+      left: 50px;
+    }
+  `;
   return (
-    <ArrowBack
+    <GoBackBtn
       style={{ cursor: "pointer" }}
       onClick={() => {
         navigate(-1);

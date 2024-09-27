@@ -172,7 +172,7 @@ const Logo = styled.img`
     props.mobileview
       ? props.isAdmin
         ? "scale(1.7)  translateX(-10px)"
-        : "scale(1.7) translateX(5px) "
+        : "scale(1.7)  translateX(13px)"
       : "scale(1.6)  translateX(20px) "};
 
   cursor: pointer;
