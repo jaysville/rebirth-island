@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { ArrowBack } from "@mui/icons-material";
 
 export const MainBtn = styled.button`
   width: 110px;
@@ -31,3 +33,16 @@ export const AltBtn = styled.button`
   border: none;
   height: 50px;
 `;
+
+export const GoBack = () => {
+  const navigate = useNavigate();
+
+  return (
+    <ArrowBack
+      style={{ cursor: "pointer" }}
+      onClick={() => {
+        navigate(-1);
+      }}
+    />
+  );
+};

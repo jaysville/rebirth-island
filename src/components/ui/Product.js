@@ -4,7 +4,9 @@ const Product = ({ product }) => {
     <Style>
       <a href={`/merch/${product._id}`}>
         <img alt="product" src={product.images[0]} />
-        <span>{product.name}</span>
+        <span className="product-name">
+          <b>{product.name}</b>
+        </span>
         <span>₦{product.price} </span>
       </a>
     </Style>
@@ -21,19 +23,16 @@ const Style = styled.div`
     text-decoration: none;
     color: black;
   }
+  b {
+    font-weight: 500;
+  }
   span {
     display: block;
-    font-size: 14px;
+    font-size: 13px;
   }
-  button {
-    transform: scale(0.8);
-    position: absolute;
-    top: 80px;
-    left: 150px;
-    cursor: pointer;
-  }
+
   img {
-    width: 180px;
-    height: 180px;
+    width: 150px;
+    height: 150px;
   }
 `;

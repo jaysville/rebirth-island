@@ -21,14 +21,19 @@ export const merchApi = createApi({
       query: () => "/merch",
       providesTags: ["Merch"],
     }),
+    getCollections: builder.query({
+      query: (collection) => `/collections/${collection}`,
+      providesTags: ["Merch"],
+    }),
     getSingleMerch: builder.query({
       query: (id) => `/merch/${id}`,
       providesTags: ["Merch"],
     }),
     addMerch: builder.mutation({
-      query: ({ name, price, sizes, images }) => {
+      query: ({ name, category, price, sizes, images }) => {
         const formData = new FormData();
         formData.append("name", name);
+        formData.append("category", category);
         formData.append("price", price);
         formData.append("sizes", sizes);
         for (let i = 0; i < images.length; i++) {
@@ -43,9 +48,10 @@ export const merchApi = createApi({
       invalidatesTags: ["Merch"],
     }),
     editMerch: builder.mutation({
-      query: ({ name, price, sizes, images, id }) => {
+      query: ({ name, category, price, sizes, images, id }) => {
         const formData = new FormData();
         formData.append("name", name);
+        formData.append("category", category);
         formData.append("price", price);
         formData.append("sizes", sizes);
         if (images.length > 0) {
@@ -74,6 +80,7 @@ export const merchApi = createApi({
 
 export const {
   useGetMerchQuery,
+  useGetCollectionsQuery,
   useGetSingleMerchQuery,
   useAddMerchMutation,
   useEditMerchMutation,

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const AddMerch = ({ mobileview }) => {
   const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
   const [price, setPrice] = useState(0);
   const [images, setImages] = useState(null);
   const [sizes, setSizes] = useState("");
@@ -24,7 +25,7 @@ const AddMerch = ({ mobileview }) => {
         duration: 3,
         placement: "bottomRight",
       });
-      console.log(data);
+
       navigate("/");
     }
     if (isError) {
@@ -38,7 +39,7 @@ const AddMerch = ({ mobileview }) => {
 
   const handleUploadMerch = (e) => {
     e.preventDefault();
-    if (!name || !price || !images || !sizes) {
+    if (!name || !category || !price || !images || !sizes) {
       notification.error({
         message: "All fields must be properly filled",
         duration: 3,
@@ -48,7 +49,7 @@ const AddMerch = ({ mobileview }) => {
       return;
     }
 
-    addMerch({ name, price, sizes, images });
+    addMerch({ name, category, price, sizes, images });
   };
 
   return (
@@ -60,6 +61,15 @@ const AddMerch = ({ mobileview }) => {
             placeholder="Product name"
             onChange={(e) => {
               setName(e.target.value);
+            }}
+          />
+        </div>
+        <div>
+          <label>Category</label>
+          <input
+            placeholder="Product Category"
+            onChange={(e) => {
+              setCategory(e.target.value);
             }}
           />
         </div>

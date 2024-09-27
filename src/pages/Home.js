@@ -48,10 +48,10 @@ const Style = styled.div`
   }
 `;
 
-const ProductsContainer = styled.ul`
+export const ProductsContainer = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 30px;
   @media (max-width: 650px) {
     grid-template-columns: repeat(2, 1fr);
   }

@@ -17,6 +17,21 @@ export const adminApi = createApi({
   endpoints: (builder) => ({
     getOrders: builder.query({
       query: () => "/orders",
+      providesTags: ["Order"],
+    }),
+    getSingleOrder: builder.query({
+      query: (orderId) => `/order/${orderId}`,
+      providesTags: ["Order"],
+    }),
+    updateOrderStatus: builder.mutation({
+      query: ({ status, orderId }) => {
+        return {
+          url: `/order/${orderId}`,
+          method: "POST",
+          body: { status },
+        };
+      },
+      invalidatesTags: ["Order"],
     }),
     initializeTransaction: builder.mutation({
       query: (body) => {
@@ -40,6 +55,8 @@ export const adminApi = createApi({
 
 export const {
   useGetOrdersQuery,
+  useGetSingleOrderQuery,
+  useUpdateOrderStatusMutation,
   useInitializeTransactionMutation,
   useVerifyTransactionMutation,
 } = adminApi;

@@ -1,59 +1,147 @@
 import styled from "styled-components";
-import { useGetOrdersQuery } from "../../redux/api/adminApi";
-import { useEffect } from "react";
-import { Spin } from "antd";
+import {
+  useGetOrdersQuery,
+  useUpdateOrderStatusMutation,
+} from "../../redux/api/adminApi";
+import { useEffect, useState } from "react";
+import { notification, Spin } from "antd";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
+import TableContainer from "@mui/material/TableContainer";
+
+import { AltBtn } from "../../components/ui/Buttons";
+import { useNavigate } from "react-router-dom";
+import { getStatusColor } from "./OrderDetails";
 
 const Orders = () => {
-  const {
-    data: orders,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetOrdersQuery();
+  const { data: orders, isLoading, isSuccess } = useGetOrdersQuery();
+  const [orderId, setOrderId] = useState(null);
+  const [
+    updateOrderStatus,
+    {
+      isLoading: statusLoading,
+      isError: statusIsError,
+      error: statusError,
+      isSuccess: statusIsSuccess,
+    },
+  ] = useUpdateOrderStatusMutation();
 
   useEffect(() => {
-    if (isSuccess) {
-      console.log(orders);
+    if (statusIsSuccess) {
+      notification.success({
+        message: "Status Updated",
+        duration: 3,
+        placement: "bottomRight",
+      });
     }
-    if (isError) {
-      console.log(error);
+    if (statusIsError) {
+      notification.error({
+        message: statusError.data.message,
+        duration: 3,
+        placement: "bottomRight",
+      });
     }
-  }, [isSuccess]);
+  }, [statusIsSuccess, statusError, statusIsError]);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.target);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
+  const navigate = useNavigate();
+
+  const status = ["Pending", "Shipped", "Delivered"];
   return (
     <Style>
       <h2>Orders</h2>
       {isLoading ? (
         <Spin />
       ) : isSuccess ? (
-        <ol>
-          {orders.map((order, i) => (
-            <li key={i} className="order-list">
-              <ul>
-                {Object.keys(order).map((key) =>
-                  key !== "products" ? (
-                    <li key={key}>{`${key}: ${order[key]}`}</li>
-                  ) : (
-                    <li key={key}>
-                      <strong>Products:</strong>
-                      <ul className="products-list">
-                        {order.products.map((product, index) => (
-                          <li key={index}>
-                            {Object.keys(product).map((productKey) => (
-                              <p
-                                key={productKey}
-                              >{`${productKey}: ${product[productKey]}`}</p>
-                            ))}
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                  )
-                )}
-              </ul>
-            </li>
-          ))}
-        </ol>
+        <TableContainer>
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                <th>Total Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => {
+                return (
+                  <tr key={order._id}>
+                    <td data-label="Order ID">{order._id}</td>
+                    <td data-label="Customer Name">{order.fullName}</td>
+                    <td data-label="Order Date">
+                      {new Date(order.createdAt).toLocaleDateString()}
+                    </td>
+                    <OrderStatus data-label="Status" status={order.status}>
+                      {order.status}
+                    </OrderStatus>
+                    <td data-label="Total Amount">
+                      ₦{order.totalAmount.toLocaleString("en-US")}
+                    </td>
+                    <td data-label="Actions" className="button-container">
+                      <AltBtn
+                        onClick={() => {
+                          navigate(`/order/${order._id}`);
+                        }}
+                      >
+                        View Details
+                      </AltBtn>
+                      <AltBtn
+                        onClick={(e) => {
+                          handleClick(e);
+                          setOrderId(order._id);
+                        }}
+                      >
+                        Update Status
+                      </AltBtn>
+                      <Popover
+                        id={order._id}
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "left",
+                        }}
+                      >
+                        {status.map((status, i) => {
+                          return (
+                            <Text
+                              sx={{ p: 2, cursor: "pointer" }}
+                              key={i}
+                              onClick={() => {
+                                updateOrderStatus({
+                                  status,
+                                  orderId: orderId,
+                                });
+                                handleClose();
+                              }}
+                            >
+                              {status}
+                            </Text>
+                          );
+                        })}
+                      </Popover>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </TableContainer>
       ) : (
         <p>Server is down :(</p>
       )}
@@ -63,14 +151,93 @@ const Orders = () => {
 
 export default Orders;
 
+const OrderStatus = styled.td`
+  color: ${({ status }) => getStatusColor(status)};
+`;
+const Text = styled(Typography)`
+  padding: 5px;
+  &:hover {
+    color: aliceblue;
+    background-color: #a55fa5;
+    transition: all 200ms ease-in-out;
+  }
+`;
+
 const Style = styled.div`
+  padding: 0 30px;
+  margin-bottom: 200px;
+
   h2 {
     text-align: center;
   }
-  .order-list {
-    border: 1px solid purple;
+
+  .button-container {
+    display: flex;
+    gap: 10px;
+    @media (max-width: 460px) {
+      flex-direction: column;
+    }
   }
-  .products-list {
-    list-style: lower-roman;
+  button {
+    border-radius: 0;
+    width: 105px;
+    padding: 10px;
+    height: fit-content;
+    cursor: pointer;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  thead {
+    background-color: #f2f2f2;
+  }
+
+  @media (max-width: 860px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block;
+    }
+
+    thead tr {
+      display: none;
+    }
+
+    tr {
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    td {
+      border: none;
+      border-bottom: 1px solid #eee;
+      position: relative;
+      padding-left: 42%;
+    }
+
+    td:before {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+      content: attr(data-label);
+      color: black;
+      font-weight: bold;
+    }
   }
 `;

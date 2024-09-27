@@ -32,7 +32,6 @@ const Checkout = ({ mobileview }) => {
   const [
     verifyTransaction,
     {
-      data: verifyData,
       isLoading: verificationLoading,
       error: verificationError,
       isError: verificationIsError,
@@ -67,7 +66,11 @@ const Checkout = ({ mobileview }) => {
       });
     }
     if (isError) {
-      console.log(error);
+      notification.error({
+        message: "Something went wrong",
+        duration: 3,
+        placement: "bottomRight",
+      });
     }
   }, [isSuccess, isError, error, data]);
 
@@ -76,8 +79,6 @@ const Checkout = ({ mobileview }) => {
     {
       isSuccess: orderSuccess,
       isError: orderIsError,
-      error: orderError,
-
       isLoading: orderIsLoading,
     },
   ] = usePlaceOrderMutation();
@@ -93,9 +94,11 @@ const Checkout = ({ mobileview }) => {
         landmark: values.landmark,
         city: values.city,
         state: values.state,
-        products: cart.map(({ _id, size, quantity }) => {
+        products: cart.map(({ _id, name, images, size, quantity }) => {
           return {
             productId: _id,
+            image: images[0],
+            name,
             size,
             quantity,
           };
@@ -104,7 +107,11 @@ const Checkout = ({ mobileview }) => {
       });
     }
     if (verificationError) {
-      console.log(verificationError);
+      notification.error({
+        message: "Couldn't verify product.",
+        duration: 5,
+        placement: "bottomRight",
+      });
     }
   }, [verificationError, verificationIsError, verificationIsSuccess]);
 
@@ -142,7 +149,6 @@ const Checkout = ({ mobileview }) => {
       },
       validationSchema: orderSchema,
       onSubmit: () => {
-        console.log(values);
         initializeTransaction({
           key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
           email: "olaotanabarowei@gmail.com",

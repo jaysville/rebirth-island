@@ -7,6 +7,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import { useSelector } from "react-redux";
 import { Logout, PermIdentity } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { collectionLinks } from "./Nav";
 
 const SideNav = ({ opensidenav, closesidenav, openlogoutmodal }) => {
   const totalQuantity = useSelector((state) => state.app.totalQuantity);
@@ -26,7 +27,17 @@ const SideNav = ({ opensidenav, closesidenav, openlogoutmodal }) => {
             </CartLink>
           </a>
         )}
-        {!isAdmin && <Menu mode="inline" items={items} />}
+        {!isAdmin && (
+          <ul>
+            {collectionLinks.map(({ title, href }, i) => {
+              return (
+                <a href={href}>
+                  <li className="collections-link">{title} </li>
+                </a>
+              );
+            })}
+          </ul>
+        )}
         {token ? (
           <>
             {!isAdmin ? (
@@ -93,6 +104,12 @@ const Container = styled.div`
     margin: 10px 0;
     border-radius: 0;
   }
+
+  .collections-link {
+    border-bottom: 1px solid grey;
+    padding: 10px;
+    padding-left: 28px;
+  }
 `;
 
 const Close = styled(CloseOutlined)`
@@ -133,24 +150,3 @@ const AuthLink = styled.div`
     transform: scale(0.8) translateY(8px);
   }
 `;
-
-const items = [
-  { type: "divider" },
-  {
-    key: "1",
-    label: "New Arrivals",
-  },
-  { type: "divider" },
-  {
-    key: "2",
-
-    label: "Men",
-  },
-  { type: "divider" },
-  {
-    key: "3",
-
-    label: "Women",
-  },
-  { type: "divider" },
-];

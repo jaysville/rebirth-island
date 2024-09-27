@@ -92,8 +92,8 @@ const Container = styled.div`
   }
   svg {
     position: absolute;
-    right: 30px;
-    top: 30px;
+    right: 5px;
+    top: 0px;
   }
   img {
     width: 85px;

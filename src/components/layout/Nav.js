@@ -85,14 +85,14 @@ const Nav = ({ mobileview, opensidenav, opencartmodal, openlogoutmodal }) => {
                         items,
                       }}
                     >
-                      <a onClick={(e) => e.preventDefault()}>
+                      <a>
                         <Space>
                           {title} <DownOutlined />
                         </Space>
                       </a>
                     </Dropdown>
                   ) : (
-                    <a>{title}</a>
+                    <a href={href}> {title}</a>
                   )}
                 </li>
               );
@@ -227,17 +227,17 @@ const LogoutIcon = styled(Logout)`
   transform: scale(0.9) translateY(3px) translateX(2px);
 `;
 
-const collectionLinks = [
+export const collectionLinks = [
   {
-    title: "New Arrivals",
-    href: "",
+    title: "Male",
+    href: "/collections/male",
   },
   {
-    title: "Men",
-    href: "",
+    title: "Female",
+    href: "/collections/female",
   },
   {
-    title: "Women",
-    href: "",
+    title: "Accessories",
+    href: "/collections/accessories",
   },
 ];

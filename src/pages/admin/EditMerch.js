@@ -14,6 +14,7 @@ const EditMerch = ({ mobileview }) => {
   const { id } = params;
 
   const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
   const [price, setPrice] = useState(0);
   const [images, setImages] = useState([]);
   const [sizes, setSizes] = useState("");
@@ -65,6 +66,7 @@ const EditMerch = ({ mobileview }) => {
     }
     if (isSuccess) {
       setName(product.name);
+      setCategory(product.category);
       setPrice(product.price);
       setSizes(product.sizes);
     }
@@ -73,7 +75,7 @@ const EditMerch = ({ mobileview }) => {
   const handleSave = (e) => {
     e.preventDefault();
 
-    if (!name || !price || !sizes) {
+    if (!name || !category || !price || !sizes) {
       notification.error({
         message: "All fields must be properly filled",
         duration: 3,
@@ -94,7 +96,7 @@ const EditMerch = ({ mobileview }) => {
       return;
     }
 
-    editMerch({ name, sizes, price, images, id: product._id });
+    editMerch({ name, category, sizes, price, images, id: product._id });
   };
 
   return (
@@ -110,6 +112,15 @@ const EditMerch = ({ mobileview }) => {
             <input
               defaultValue={product.name}
               onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Category</label>
+            <input
+              defaultValue={product.category || ""}
+              onChange={(e) => {
+                setCategory(e.target.value);
+              }}
             />
           </div>
           <div>

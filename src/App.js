@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Nav from "./components/layout/Nav";
 import SideNav from "./components/layout/SideNav";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Footer from "./components/layout/Footer";
 import Product from "./pages/Product";
@@ -21,6 +21,9 @@ import RefundPolicy from "./pages/Refund-Policy";
 import Contact from "./pages/Contact";
 import TOC from "./pages/TOC";
 import Orders from "./pages/admin/Orders";
+import OrderDetails from "./pages/admin/OrderDetails";
+import Shop from "./pages/Shop";
+import { GoBack } from "./components/ui/Buttons";
 
 function App() {
   const [mobileView, setMobileView] = useState(false);
@@ -28,8 +31,15 @@ function App() {
   const [openSideNav, setOpenSideNav] = useState(false);
   const [showCartModal, setShowCartModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [currentPath, setCurrentPath] = useState("");
 
   const dispatch = useDispatch();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setCurrentPath(location.pathname);
+  }, [location.pathname]);
 
   const handleOk = () => {
     setShowLogoutModal(false);
@@ -105,12 +115,14 @@ function App() {
         isopen={showCartModal}
       />
       <Container>
+        {currentPath !== "/" && <GoBack />}
         <Routes>
           <Route path="/" element={<Home mobileview={mobileView} />} />
           <Route
             path="/orders"
             element={isAdmin ? <Orders /> : <Navigate to="/" />}
           />
+          <Route path="/order/:orderId" element={<OrderDetails />} />
           <Route
             path="/add-merch"
             element={
@@ -132,6 +144,7 @@ function App() {
             }
           />
           <Route path="/merch/:id" element={<Product />} />
+          <Route path="/collections/:collection" element={<Shop />} />
           <Route
             path="/cart"
             element={
@@ -171,4 +184,13 @@ export default App;
 
 const Container = styled.div`
   margin-top: 120px;
+  position: relative;
+  svg {
+    position: absolute;
+    left: 100px;
+    color: #a55fa5;
+    @media (max-width: 780px) {
+      left: 50px;
+    }
+  }
 `;

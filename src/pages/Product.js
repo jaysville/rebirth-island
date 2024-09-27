@@ -68,24 +68,13 @@ const Product = () => {
       setActiveImage(product.images[0]);
     }
     if (isError) {
-      console.log(error);
+      navigate("/");
     }
   }, [isSuccess, isError, error, product?.sizes]);
 
   const dispatch = useDispatch();
   const isAdmin = useSelector((state) => state.app.isAdmin);
 
-  // const cart = useSelector((state) => state.app.cart);
-  // const cartItemIds = useSelector((state) => state.app.cartItemIds);
-
-  // useEffect(() => {
-  //   if (isAdmin) {
-  //     setInCart(false);
-  //   } else if (product && cart) {
-  //     const itemInCart = cartItemIds.includes(product._id);
-  //     setInCart(itemInCart);
-  //   }
-  // }, [isAdmin, cart, product, cartItemIds]);
   const handleClose = () => setshowConformationModal(false);
 
   useEffect(() => {
@@ -107,15 +96,11 @@ const Product = () => {
   }, [deleteError, deleteIsError, deleteIsSuccess, navigate]);
 
   const handleClick = () => {
-    // if (!inCart) {
     dispatch(addToCart({ product, quantity, size }));
     setshowConformationModal(true);
     setTimeout(() => {
       handleClose();
     }, 850);
-    // } else {
-    //   dispatch(clearItem(product._id));
-    // }
   };
 
   const handleChange = (event) => {
