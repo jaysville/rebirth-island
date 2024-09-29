@@ -12,7 +12,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Checkout from "./pages/Checkout";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal } from "antd";
+import { Modal, notification } from "antd";
 import { logout } from "./redux/store.js/slices/appSlice";
 import AddMerch from "./pages/admin/AddMerch";
 import EditMerch from "./pages/admin/EditMerch";
@@ -34,8 +34,31 @@ function App() {
   const [showCartModal, setShowCartModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
+  const sessionExpirationTime = useSelector(
+    (state) => state.app.sessionExpiresAt
+  );
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (sessionExpirationTime) {
+      const interval = setInterval(() => {
+        const currentDate = Date.now();
+
+        if (currentDate > sessionExpirationTime) {
+          notification.error({
+            message: "Your session has expired. Please log in again",
+            duration: 3,
+            placement: "bottomRight",
+          });
+          dispatch(logout());
+          clearInterval(interval);
+        }
+      }, 1000); // Check every second
+
+      return () => clearInterval(interval); // Cleanup on unmount
+    }
+  }, [sessionExpirationTime, dispatch]);
 
   const location = useLocation();
 

@@ -4,9 +4,7 @@ const initialState = {
   user: null,
   token: null,
   isAdmin: false,
-  // sessionExpiresAt: null,
-  // timeout: false,
-  // didLogOut: false,
+  sessionExpiresAt: null,
   cart: [],
   cartItemIds: [],
   totalQuantity: 0,
@@ -23,6 +21,7 @@ const appSlice = createSlice({
       const newToken = action.payload;
 
       state.token = newToken;
+      state.sessionExpiresAt = Date.now() + 24 * 60 * 60 * 1000;
     },
     updateAdmin: (state, action) => {
       state.isAdmin = action.payload;
@@ -31,6 +30,7 @@ const appSlice = createSlice({
       state.user = null;
       state.token = null;
       state.isAdmin = false;
+      state.sessionExpiresAt = null;
     },
     addToCart(state, action) {
       const newItem = action.payload.product;
