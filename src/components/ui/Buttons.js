@@ -39,7 +39,7 @@ export const GoBack = () => {
 
   const GoBackBtn = styled(ArrowBack)`
     position: absolute;
-    left: 100px;
+    left: 70px;
     color: #a55fa5;
     @media (max-width: 780px) {
       left: 50px;

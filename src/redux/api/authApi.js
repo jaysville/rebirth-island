@@ -3,8 +3,8 @@ import serverUrl from "../../server";
 
 export const authApi = createApi({
   reducerPath: "authApi",
-  refetchOnMountOrArgChange: true,
-  refetchOnReconnect: true,
+  // refetchOnMountOrArgChange: true,
+  // refetchOnReconnect: true,
 
   baseQuery: fetchBaseQuery({
     baseUrl: `${serverUrl}/auth`,

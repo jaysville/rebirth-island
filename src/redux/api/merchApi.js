@@ -3,9 +3,8 @@ import serverUrl from "../../server";
 
 export const merchApi = createApi({
   reducerPath: "merchApi",
-  refetchOnMountOrArgChange: true,
-  refetchOnReconnect: true,
-
+  // refetchOnMountOrArgChange: true,
+  // refetchOnReconnect: true,
   baseQuery: fetchBaseQuery({
     baseUrl: `${serverUrl}`,
     prepareHeaders: (headers, { getState }) => {

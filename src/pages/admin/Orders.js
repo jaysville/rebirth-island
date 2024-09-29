@@ -4,7 +4,7 @@ import {
   useUpdateOrderStatusMutation,
 } from "../../redux/api/adminApi";
 import { useEffect, useState } from "react";
-import { notification, Spin } from "antd";
+import { notification, Spin, Modal } from "antd";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import TableContainer from "@mui/material/TableContainer";
@@ -15,6 +15,18 @@ import { getStatusColor } from "./OrderDetails";
 
 const Orders = () => {
   const { data: orders, isLoading, isSuccess } = useGetOrdersQuery();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newStatus, setNewStatus] = useState("");
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const [orderId, setOrderId] = useState(null);
   const [
     updateOrderStatus,
@@ -58,9 +70,26 @@ const Orders = () => {
   const navigate = useNavigate();
 
   const status = ["Pending", "Shipped", "Delivered"];
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+
+    updateOrderStatus({
+      status: newStatus,
+      orderId: orderId,
+    });
+  };
   return (
     <Style>
       <h2>Orders</h2>
+      <Modal
+        title="Confirm Status Update"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        Update order #<b>{orderId}</b> status to <b>{newStatus}</b> ?
+      </Modal>
       {isLoading ? (
         <Spin />
       ) : isSuccess ? (
@@ -123,11 +152,10 @@ const Orders = () => {
                               sx={{ p: 2, cursor: "pointer" }}
                               key={i}
                               onClick={() => {
-                                updateOrderStatus({
-                                  status,
-                                  orderId: orderId,
-                                });
                                 handleClose();
+
+                                setNewStatus(status);
+                                showModal();
                               }}
                             >
                               {status}

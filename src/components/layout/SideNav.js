@@ -117,6 +117,7 @@ const Close = styled(CloseOutlined)`
 `;
 const LinkContainer = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
   padding: 10px 0;
   padding-left: 30px;
   cursor: pointer;

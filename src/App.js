@@ -24,6 +24,8 @@ import Orders from "./pages/admin/Orders";
 import OrderDetails from "./pages/admin/OrderDetails";
 import Shop from "./pages/Shop";
 import { GoBack } from "./components/ui/Buttons";
+import Account from "./pages/Account";
+import ResetPassword from "./pages/Reset-Password";
 
 function App() {
   const [mobileView, setMobileView] = useState(false);
@@ -143,6 +145,7 @@ function App() {
               )
             }
           />
+          {!isAdmin && token && <Route path="/account" element={<Account />} />}
           <Route path="/merch/:id" element={<Product />} />
           <Route path="/collections/:collection" element={<Shop />} />
           <Route
@@ -169,10 +172,12 @@ function App() {
               )
             }
           />
+          <Route path="reset-password/:token" element={<ResetPassword />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="refund-policy" element={<RefundPolicy />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/terms-of-use-and-conduct" element={<TOC />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Container>
       <Footer />
@@ -184,5 +189,6 @@ export default App;
 
 const Container = styled.div`
   margin-top: 120px;
+
   position: relative;
 `;

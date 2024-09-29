@@ -14,6 +14,8 @@ import {
   updateUser,
 } from "../../redux/store.js/slices/appSlice";
 import { ErrorText } from "./Register";
+import { useState } from "react";
+import ResetPasswordModal from "../../components/ui/ResetPasswordModal";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -59,6 +61,10 @@ const Login = () => {
     }
   }, [data, error, isSuccess, isError, isLoading, dispatch, navigate]);
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Style>
       <h3>Login</h3>
@@ -77,7 +83,8 @@ const Login = () => {
           )}
         </div>
 
-        <div>
+        <div className="password-container">
+          <ResetPasswordModal isOpen={open} handleClose={handleClose} />
           <label>Password</label>
           <input
             type="password"
@@ -86,6 +93,7 @@ const Login = () => {
             onChange={handleChange}
             onBlur={handleBlur}
           ></input>
+          <p onClick={handleOpen}>Forgot your Password?</p>
           {touched.password && errors.password && (
             <ErrorText>{errors.password}</ErrorText>
           )}
@@ -129,6 +137,17 @@ const Style = styled.div`
 
   div {
     margin-bottom: 20px;
+  }
+
+  .password-container {
+    position: relative;
+    p {
+      position: absolute;
+      text-decoration: underline;
+      cursor: pointer;
+      top: -10px;
+      right: 0;
+    }
   }
 `;
 

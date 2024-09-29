@@ -76,6 +76,7 @@ const OrderDetails = () => {
                 <ProductItem key={product._id}>
                   <div>
                     <ProductName>{product.name}</ProductName>
+                    <ProductDetail>Price:₦{product.price}</ProductDetail>
                     <ProductDetail>Size: {product.size}</ProductDetail>
                     <ProductDetail>Quantity: {product.quantity}</ProductDetail>
                   </div>

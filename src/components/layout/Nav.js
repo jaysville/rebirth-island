@@ -187,7 +187,7 @@ const AdminContainer = styled.div`
 `;
 const CollectionsList = styled.ul`
   font-weight: 500;
-  transform: translateY(9px);
+  transform: translateY(9px) translateX(50px);
   svg {
     transform: scale(0.6) translateX(-18px) translateY(3px);
   }

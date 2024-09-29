@@ -100,10 +100,11 @@ const Checkout = ({ mobileview }) => {
         landmark: values.landmark,
         city: values.city,
         state: values.state,
-        products: cart.map(({ _id, name, images, size, quantity }) => {
+        products: cart.map(({ _id, name, price, images, size, quantity }) => {
           return {
             productId: _id,
             image: images[0],
+            price,
             name,
             size,
             quantity,
