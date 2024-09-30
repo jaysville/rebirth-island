@@ -69,7 +69,7 @@ const Orders = () => {
 
   const navigate = useNavigate();
 
-  const status = ["Pending", "Shipped", "Delivered"];
+  const status = ["Shipped", "Delivered"];
 
   const handleOk = () => {
     setIsModalOpen(false);

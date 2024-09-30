@@ -13,6 +13,10 @@ const Footer = () => {
           );
         })}
       </ul>
+
+      <div>
+        <small>© 2024 Rebirth Island. All rights reserved</small>
+      </div>
     </Style>
   );
 };
@@ -29,6 +33,12 @@ const Style = styled.footer`
   }
   li {
     padding: 3px;
+  }
+  div {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid aliceblue;
+    padding-top: 10px;
   }
 `;
 

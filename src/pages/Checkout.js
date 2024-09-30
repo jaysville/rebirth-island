@@ -20,14 +20,34 @@ import { ErrorText } from "./auth/Register";
 import { notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../redux/store.js/slices/appSlice";
-
+import { Modal } from "antd";
 const Checkout = ({ mobileview }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const [
     initializeTransaction,
     { data, isLoading, isSuccess, isError, error },
   ] = useInitializeTransactionMutation();
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+    initializeTransaction({
+      key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
+      email: "olaotanabarowei@gmail.com",
+      amount: netPrice * 100,
+    });
+  };
 
   const [
     verifyTransaction,
@@ -156,11 +176,7 @@ const Checkout = ({ mobileview }) => {
       },
       validationSchema: orderSchema,
       onSubmit: () => {
-        initializeTransaction({
-          key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
-          email: "olaotanabarowei@gmail.com",
-          amount: netPrice * 100,
-        });
+        showModal();
       },
     });
 
@@ -215,8 +231,21 @@ const Checkout = ({ mobileview }) => {
             )}
           </div>
         )}
-        <Form onSubmit={handleSubmit}>
+        <Form>
           <h3>Contact</h3>
+          <Modal
+            title="Confirm Delivery details"
+            open={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
+          >
+            <p>
+              <b>
+                Please ensure your delivery details are accurate. By clicking
+                "OK", you agree to proceed with the payment.
+              </b>
+            </p>
+          </Modal>
           <DoubleContainer>
             <div>
               <label>Email</label>
@@ -339,7 +368,7 @@ const Checkout = ({ mobileview }) => {
               </TextField>
             </LocationContainer>
           </div>
-          <MainBtn type="submit" disabled={isLoading}>
+          <MainBtn type="submit" disabled={isLoading} onClick={handleSubmit}>
             {orderIsLoading
               ? "Placing order..."
               : verificationLoading
