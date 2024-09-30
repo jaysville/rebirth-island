@@ -20,7 +20,7 @@ const CartModal = ({ isopen, closecartmodal }) => {
   return (
     <Drawer open={isopen} onClose={closecartmodal} anchor="right">
       <Container>
-        <CloseOutlined onClick={closecartmodal} />
+        <Clear onClick={closecartmodal} />
         <CartStyle>
           <h3>Cart</h3>
           {cart.length > 0 ? (
@@ -90,16 +90,17 @@ const Container = styled.div`
     text-align: center;
     margin-bottom: 132px;
   }
-  svg {
-    position: absolute;
-    right: 5px;
-    top: 0px;
-  }
+
   img {
     width: 85px;
   }
 `;
 
+const Clear = styled(CloseOutlined)`
+  position: absolute;
+  right: 20px;
+  top: 20px;
+`;
 const CheckoutSection = styled.div`
   transform: translateY(-10px);
   border-top: 1px solid rgba(0, 0, 0, 0.3);
