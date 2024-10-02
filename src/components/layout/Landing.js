@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { MainBtn } from "../ui/Buttons";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import Banner from "../../assets/banner2.JPG";
 
 const Landing = () => {
   const isAdmin = useSelector((state) => state.app.isAdmin);
-  const navigate = useNavigate();
+
   return (
     <Style>
       <div>
@@ -25,7 +25,7 @@ const Landing = () => {
 
 const Style = styled.div`
   height: 650px;
-  background-image: url("images/banner2.JPG");
+  background-image: url(${Banner});
   background-size: cover;
   background-position: center;
   position: relative;
