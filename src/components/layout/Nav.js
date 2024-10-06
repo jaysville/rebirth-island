@@ -151,7 +151,8 @@ const Style = styled.nav`
   display: flex;
   justify-content: space-between;
   font-size: 15px;
-  background-color: white;
+  /* color: aliceblue; */
+
   position: fixed;
   z-index: 1000;
   width: 100%;
