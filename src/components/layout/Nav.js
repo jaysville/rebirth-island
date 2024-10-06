@@ -152,7 +152,7 @@ const Style = styled.nav`
   justify-content: space-between;
   font-size: 15px;
   /* color: aliceblue; */
-
+  background-color: white;
   position: fixed;
   z-index: 1000;
   width: 100%;
