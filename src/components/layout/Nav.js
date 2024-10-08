@@ -173,9 +173,9 @@ const Logo = styled.img`
   transform: ${(props) =>
     props.mobileview
       ? props.isAdmin
-        ? "  translateX(-10px)"
-        : "  translateX(13px)"
-      : "  translateX(20px) "};
+        ? "translateX(-10px)"
+        : "translateX(23px)"
+      : "translateX(20px) "};
 
   cursor: pointer;
 `;
