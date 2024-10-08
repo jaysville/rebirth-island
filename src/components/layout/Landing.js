@@ -1,21 +1,19 @@
 import styled from "styled-components";
-import { MainBtn } from "../ui/Buttons";
+import { MainBtn, ShopNowBtn } from "../ui/Buttons";
 import { useSelector } from "react-redux";
 import Banner from "../../assets/banner2.JPG";
+import Welcome from "../../assets/welcome.PNG";
 
 const Landing = () => {
   const isAdmin = useSelector((state) => state.app.isAdmin);
 
   return (
     <Style>
-      <div>
-        <h2>
-          Welcome to the
-          <br /> Rebirth Island
-        </h2>
+      <div className="animate__animated animate__fadeInDown">
+        <img src={Welcome} alt="welcome text" />
         {!isAdmin && (
           <a href="#shop">
-            <MainBtn type="button">Shop Now</MainBtn>
+            <ShopNowBtn type="button">SHOP NOW</ShopNowBtn>
           </a>
         )}
       </div>
@@ -31,25 +29,23 @@ const Style = styled.div`
   position: relative;
   div {
     position: absolute;
-    top: 150px;
-    left: 60px;
+    top: 240px;
+    left: -60px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    @media (max-width: 1000px) {
-      top: 220px;
-      left: 50px;
-      h2 {
-        font-size: 30px;
-      }
+    img {
+      transform: scale(0.6);
     }
-  }
-  h2 {
-    font-family: "Dancing Script", cursive, "Sans Serif";
-    color: #fcf0ff;
-    font-size: 50px;
-    @media (max-width: 600px) {
-      color: #d994d7;
+    @media (max-width: 980px) {
+      transform: scale(0.9);
+
+      left: -100px;
+    }
+    @media (max-width: 500px) {
+      transform: scale(0.75);
+      top: 250px;
+      left: -130px;
     }
   }
 `;

@@ -100,8 +100,10 @@ export const getStatusColor = (status) => {
   switch (status) {
     case "Pending":
       return "Orange";
-    case "Shipped":
+    case "Received":
       return "blue";
+    case "Shipped":
+      return "teal";
     case "Delivered":
       return "green";
     default:

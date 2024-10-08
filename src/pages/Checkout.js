@@ -3,7 +3,7 @@ import Form from "../components/ui/Form";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { statesInNigeria } from "../data";
-import { MainBtn } from "../components/ui/Buttons";
+import { AltBtn, MainBtn } from "../components/ui/Buttons";
 import { useDispatch, useSelector } from "react-redux";
 import CheckoutItem from "../components/ui/CheckoutItem";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
@@ -17,10 +17,11 @@ import PaystackPop from "@paystack/inline-js";
 import { useFormik, Field } from "formik";
 import { orderSchema } from "../schemas";
 import { ErrorText } from "./auth/Register";
-import { notification } from "antd";
+import { Button, notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../redux/store.js/slices/appSlice";
 import { Modal } from "antd";
+
 const Checkout = ({ mobileview }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,29 +36,55 @@ const Checkout = ({ mobileview }) => {
     setIsModalOpen(false);
   };
 
-  const [
-    initializeTransaction,
-    { data, isLoading, isSuccess, isError, error },
-  ] = useInitializeTransactionMutation();
+  // const [
+  //   initializeTransaction,
+  //   { data, isLoading, isSuccess, isError, error },
+  // ] = useInitializeTransactionMutation();
 
   const handleOk = () => {
     setIsModalOpen(false);
-    initializeTransaction({
-      key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
-      email: "olaotanabarowei@gmail.com",
-      amount: netPrice * 100,
+    // initializeTransaction({
+    //   key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
+    //   email: "olaotanabarowei@gmail.com",
+    //   amount: netPrice * 100,
+    // });
+
+    //redirect to whatsapp here lmaoooo
+
+    // sendMessage();
+
+    placeOrder({
+      email: values.email,
+      phone: values.phone,
+      address: values.address,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      landmark: values.landmark,
+      city: values.city,
+      state: values.state,
+      products: cart.map(({ _id, name, price, images, size, quantity }) => {
+        return {
+          productId: _id,
+          image: images[0],
+          price,
+          name,
+          size,
+          quantity,
+        };
+      }),
+      totalAmount: netPrice,
     });
   };
 
-  const [
-    verifyTransaction,
-    {
-      isLoading: verificationLoading,
-      error: verificationError,
-      isError: verificationIsError,
-      isSuccess: verificationIsSuccess,
-    },
-  ] = useVerifyTransactionMutation();
+  // const [
+  //   verifyTransaction,
+  //   {
+  //     isLoading: verificationLoading,
+  //     error: verificationError,
+  //     isError: verificationIsError,
+  //     isSuccess: verificationIsSuccess,
+  //   },
+  // ] = useVerifyTransactionMutation();
 
   const cart = useSelector((state) => state.app.cart);
 
@@ -75,83 +102,115 @@ const Checkout = ({ mobileview }) => {
 
   const [showCartSummary, setShowCartSummary] = useState(false);
 
-  useEffect(() => {
-    if (isSuccess) {
-      const popup = new PaystackPop();
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     const popup = new PaystackPop();
 
-      popup.newTransaction({
-        key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
-        email: "olaotanabarowei@gmail.com",
-        amount: netPrice * 100,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        phone: values.phone,
-        onSuccess: () => {
-          verifyTransaction(data.data.reference);
-        },
-      });
-    }
-    if (isError) {
-      notification.error({
-        message: "Something went wrong",
-        duration: 3,
-        placement: "bottomRight",
-      });
-    }
-  }, [isSuccess, isError, error, data]);
+  //     popup.newTransaction({
+  //       key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
+  //       email: "olaotanabarowei@gmail.com",
+  //       amount: netPrice * 100,
+  //       firstName: values.firstName,
+  //       lastName: values.lastName,
+  //       phone: values.phone,
+  //       onSuccess: () => {
+  //         verifyTransaction(data.data.reference);
+  //       },
+  //     });
+  //   }
+  //   if (isError) {
+  //     notification.error({
+  //       message: "Something went wrong",
+  //       duration: 3,
+  //       placement: "bottomRight",
+  //     });
+  //   }
+  // }, [isSuccess, isError, error, data]);
 
   const [
     placeOrder,
     {
+      data: order,
       isSuccess: orderSuccess,
       isError: orderIsError,
       isLoading: orderIsLoading,
     },
   ] = usePlaceOrderMutation();
 
-  useEffect(() => {
-    if (verificationIsSuccess) {
-      placeOrder({
-        email: values.email,
-        phone: values.phone,
-        address: values.address,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        landmark: values.landmark,
-        city: values.city,
-        state: values.state,
-        products: cart.map(({ _id, name, price, images, size, quantity }) => {
-          return {
-            productId: _id,
-            image: images[0],
-            price,
-            name,
-            size,
-            quantity,
-          };
-        }),
-        totalAmount: netPrice,
-      });
-    }
-    if (verificationError) {
-      notification.error({
-        message: "Couldn't verify product.",
-        duration: 5,
-        placement: "bottomRight",
-      });
-    }
-  }, [verificationError, verificationIsError, verificationIsSuccess]);
+  // useEffect(() => {
+  //   if (verificationIsSuccess) {
+  // placeOrder({
+  //   email: values.email,
+  //   phone: values.phone,
+  //   address: values.address,
+  //   firstName: values.firstName,
+  //   lastName: values.lastName,
+  //   landmark: values.landmark,
+  //   city: values.city,
+  //   state: values.state,
+  //   products: cart.map(({ _id, name, price, images, size, quantity }) => {
+  //     return {
+  //       productId: _id,
+  //       image: images[0],
+  //       price,
+  //       name,
+  //       size,
+  //       quantity,
+  //     };
+  //   }),
+  //   totalAmount: netPrice,
+  // });
+  //   }
+  //   if (verificationError) {
+  //     notification.error({
+  //       message: "Couldn't verify product.",
+  //       duration: 5,
+  //       placement: "bottomRight",
+  //     });
+  //   }
+  // }, [verificationError, verificationIsError, verificationIsSuccess]);
 
+  const ADMIN_PHONE = "+2348148836074";
+
+  const createMessage = (orderId, orderTotal) => {
+    return `Hello Rebirth. I just placed a new Order #${orderId} which totals ₦${orderTotal}.`;
+  };
+
+  const sendMessage = (orderId, orderTotal) => {
+    const message = createMessage(orderId, orderTotal);
+    const url = `https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(
+      message
+    )}`;
+
+    window.open(url, "_blank");
+  };
+
+  const [orderData, setOrderData] = useState(null);
+  const [completeOrderIsOpen, setCompleteOrderIsOpen] = useState(false);
+
+  const showCompleteOrderModal = () => {
+    setCompleteOrderIsOpen(true);
+  };
+
+  const handleCompleteOrderCancel = () => {
+    setCompleteOrderIsOpen(false);
+  };
+
+  const completeOrderOk = () => {
+    sendMessage(orderData._id, orderData.totalAmount);
+    dispatch(clearCart());
+  };
   useEffect(() => {
     if (orderSuccess) {
-      notification.success({
-        message:
-          "Thank you for shopping with Rebirth Island! Your order details will be emailed to you shortly.",
-        duration: 6,
-        placement: "bottomRight",
-      });
-      dispatch(clearCart());
-      navigate("/");
+      setOrderData(order.order);
+      // notification.success({
+      //   message:
+      //     "Thank you for shopping with Rebirth Island!  Your order details will be sent to your email shortly. You will now be redirected to WhatsApp to complete your order.",
+      //   duration: 6,
+      //   placement: "bottomRight",
+      // });
+
+      showCompleteOrderModal();
     }
     if (orderIsError) {
       notification.error({
@@ -182,6 +241,21 @@ const Checkout = ({ mobileview }) => {
 
   return (
     <Style mobileview={mobileview}>
+      <Modal
+        title="Complete Order"
+        open={completeOrderIsOpen}
+        onOk={completeOrderOk}
+        onClose={handleCompleteOrderCancel}
+        footer={[
+          <Button key="ok" type="primary" onClick={completeOrderOk}>
+            OK
+          </Button>,
+        ]}
+      >
+        Thank you for shopping with Rebirth Island! Your order details will be
+        sent to your email shortly. You will now be redirected to WhatsApp to
+        complete your order.
+      </Modal>
       <div>
         {mobileview && (
           <div className="order-summary">
@@ -246,6 +320,7 @@ const Checkout = ({ mobileview }) => {
               </b>
             </p>
           </Modal>
+
           <DoubleContainer>
             <div>
               <label>Email</label>
@@ -368,14 +443,18 @@ const Checkout = ({ mobileview }) => {
               </TextField>
             </LocationContainer>
           </div>
-          <MainBtn type="submit" disabled={isLoading} onClick={handleSubmit}>
+          <MainBtn
+            type="submit"
+            disabled={orderIsLoading}
+            onClick={handleSubmit}
+          >
             {orderIsLoading
               ? "Placing order..."
-              : verificationLoading
-              ? "Verifying payment..."
-              : isLoading
-              ? "Loading..."
-              : "Pay Now"}
+              : // : verificationLoading
+                // ? "Verifying payment..."
+                // : isLoading
+                // ? "Loading..."
+                "Complete Purchase"}
           </MainBtn>
         </Form>
       </div>

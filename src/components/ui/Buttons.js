@@ -11,6 +11,28 @@ export const MainBtn = styled.button`
   border: none;
 `;
 
+export const ShopNowBtn = styled.button`
+  width: 150px;
+  height: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 20px;
+  color: aliceblue;
+  border: none;
+  background: #7f00ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #e100ff,
+    #7f00ff
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #e100ff,
+    #7f00ff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+`;
+
 export const QuantityControl = styled.div`
   width: 120px;
   border: 1px solid rgba(0, 0, 0, 0.2);

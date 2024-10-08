@@ -15,7 +15,11 @@ const Home = ({ mobileview }) => {
         <h3>BestSellers</h3>
         <ProductsContainer>
           {isLoading ? (
-            <Spin />
+            <Loader>
+              Fetching Products <br />
+              <br />
+              <Spin />
+            </Loader>
           ) : isSuccess ? (
             Merch.map((merch, i) => {
               return (
@@ -46,6 +50,12 @@ const Style = styled.div`
   #shop {
     margin-top: 50px;
   }
+`;
+
+const Loader = styled.div`
+  display: grid;
+  place-items: center;
+  width: 100vw;
 `;
 
 export const ProductsContainer = styled.ul`
