@@ -9,7 +9,7 @@ const Landing = () => {
 
   return (
     <Style>
-      <div className="animate__animated animate__fadeInDown">
+      <div>
         <img src={Welcome} alt="welcome text" />
         {!isAdmin && (
           <a href="#shop">
