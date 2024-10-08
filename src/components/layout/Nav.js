@@ -173,9 +173,9 @@ const Logo = styled.img`
   transform: ${(props) =>
     props.mobileview
       ? props.isAdmin
-        ? "scale(1.2)  translateX(-10px)"
-        : "scale(1.2)  translateX(13px)"
-      : "scale(1.2)  translateX(20px) "};
+        ? "  translateX(-10px)"
+        : "  translateX(13px)"
+      : "  translateX(20px) "};
 
   cursor: pointer;
 `;
@@ -206,12 +206,9 @@ const OtherLists = styled.ul`
   li {
     display: flex;
     align-items: center;
-    transform: translateY(-3px);
+    transform: translateY(5px);
     @media (max-width: 800px) {
       transform: translateY(15px);
-    }
-    div {
-      transform: translateY(2px);
     }
   }
 `;
