@@ -19,15 +19,13 @@ const OrderDetails = () => {
   } = useGetSingleOrderQuery(orderId);
 
   useEffect(() => {
-    if (isSuccess) {
-    }
-    console.log(order);
     if (isError) {
       notification.error({
         message: error.data.message,
         duration: 5,
-        placement: "bottomRightt",
+        placement: "bottomRight",
       });
+      console.log(error);
       navigate("/");
     }
   }, [isError, error]);
