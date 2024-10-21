@@ -43,8 +43,8 @@ const Style = styled.div`
       left: -100px;
     }
     @media (max-width: 500px) {
-      transform: scale(0.75);
-      top: 250px;
+      transform: scale(0.6);
+      top: 350px;
       left: -130px;
     }
   }
