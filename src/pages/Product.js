@@ -161,7 +161,11 @@ const Product = () => {
           <DetailsContainer>
             <div>
               <h3>{product.name}</h3>
-              <p>₦{product.price}</p>
+              <p className="price">
+                <del>₦{product.price}</del>
+              </p>
+              <p className="discount">₦{product.discountPrice}</p>
+              <br />
               {product.sizes && !isAdmin && (
                 <SizeControl>
                   <label>Size</label>
@@ -288,6 +292,18 @@ const ImageContainer = styled.div`
 
 const DetailsContainer = styled.div`
   width: 100%;
+  p {
+    display: inline;
+  }
+  p.price {
+    color: grey;
+    display: inline;
+    margin-right: 5px;
+    font-size: 12px;
+  }
+  .discount {
+    color: #d72e4b;
+  }
 `;
 
 const SizeControl = styled.div`

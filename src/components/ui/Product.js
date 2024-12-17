@@ -7,7 +7,10 @@ const Product = ({ product }) => {
         <span className="product-name">
           <b>{product.name}</b>
         </span>
-        <span>₦{product.price} </span>
+        <span className="product-price">
+          <del>₦{product.price}</del>{" "}
+        </span>
+        <span className="discount">₦{product.discountPrice}</span>
       </a>
     </Style>
   );
@@ -27,10 +30,19 @@ const Style = styled.div`
     font-weight: 500;
   }
   span {
-    display: block;
     font-size: 13px;
   }
+  span.product-name {
+    display: block;
+  }
 
+  span.product-price {
+    color: grey;
+    display: inline;
+  }
+  .discount {
+    color: #d72e4b;
+  }
   img {
     width: 150px;
     height: 150px;

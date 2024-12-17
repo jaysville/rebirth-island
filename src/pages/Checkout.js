@@ -67,8 +67,13 @@ const Checkout = ({ mobileview }) => {
     }
   }, [cart]);
   const shippingPrice = 5000;
+
+  // const totalProductPrice = cart.reduce((acc, item) => {
+  //   return acc + item.price * item.quantity;
+  // }, 0);
+
   const totalProductPrice = cart.reduce((acc, item) => {
-    return acc + item.price * item.quantity;
+    return acc + item.discountPrice * item.quantity;
   }, 0);
 
   const netPrice = shippingPrice + totalProductPrice;

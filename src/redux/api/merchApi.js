@@ -47,11 +47,12 @@ export const merchApi = createApi({
       invalidatesTags: ["Merch"],
     }),
     editMerch: builder.mutation({
-      query: ({ name, category, price, sizes, images, id }) => {
+      query: ({ name, category, price, discountPrice, sizes, images, id }) => {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("category", category);
         formData.append("price", price);
+        formData.append("discountPrice", discountPrice);
         formData.append("sizes", sizes);
         if (images.length > 0) {
           for (let i = 0; i < images.length; i++) {

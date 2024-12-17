@@ -4,6 +4,7 @@ const initialState = {
   user: null,
   token: null,
   isAdmin: false,
+
   sessionExpiresAt: null,
   cart: [],
   cartItemIds: [],

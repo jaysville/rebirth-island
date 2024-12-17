@@ -18,7 +18,7 @@ const CheckoutItem = ({ item }) => {
         <span className="size">{item.size !== "N/A" && item.size}</span>
       </div>
       <div className="price">
-        <span>₦{item.price}</span>
+        <span>₦{item.discountPrice}</span>
       </div>
     </Style>
   );

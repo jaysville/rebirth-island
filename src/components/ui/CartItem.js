@@ -11,7 +11,8 @@ import {
 import { CloseOutlined } from "@ant-design/icons";
 
 const CartItem = ({ item, mobileview }) => {
-  const totalPrice = item.price * item.quantity;
+  // const totalPrice = item.price * item.quantity;
+  const totalPrice = item.discountPrice * item.quantity;
 
   const dispatch = useDispatch();
 
@@ -33,7 +34,10 @@ const CartItem = ({ item, mobileview }) => {
         <img src={item.images[0]} alt="product" />
         <div>
           <span>{item.name}</span>
-          <span>₦{item.price.toFixed(2)}</span>
+          <span className="price">
+            <del>₦{item.price.toFixed(2)}</del>
+          </span>
+          <span className="discount">₦{item.discountPrice.toFixed(2)}</span>
           <span>Size: {item.size}</span>
         </div>
       </ProductDetails>
@@ -78,6 +82,12 @@ const ProductDetails = styled.div`
   }
   span {
     margin: 5px 0;
+  }
+  .price {
+    font: 12px;
+  }
+  .discount {
+    color: #d72e4b;
   }
 `;
 const CartControl = styled.div`

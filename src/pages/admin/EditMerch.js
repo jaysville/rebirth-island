@@ -16,6 +16,7 @@ const EditMerch = ({ mobileview }) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState(0);
+  const [discountPrice, setDiscountPrice] = useState(0);
   const [images, setImages] = useState([]);
   const [sizes, setSizes] = useState("");
   const navigate = useNavigate();
@@ -69,11 +70,13 @@ const EditMerch = ({ mobileview }) => {
       setCategory(product.category);
       setPrice(product.price);
       setSizes(product.sizes);
+      setDiscountPrice(product.discountPrice);
     }
   }, [isSuccess, isError]);
 
   const handleSave = (e) => {
     e.preventDefault();
+    console.log(discountPrice);
 
     if (!name || !category || !price || !sizes) {
       notification.error({
@@ -86,6 +89,7 @@ const EditMerch = ({ mobileview }) => {
       name === product.name &&
       price === product.price &&
       sizes === product.sizes &&
+      !discountPrice &&
       !images
     ) {
       notification.error({
@@ -96,7 +100,15 @@ const EditMerch = ({ mobileview }) => {
       return;
     }
 
-    editMerch({ name, category, sizes, price, images, id: product._id });
+    editMerch({
+      name,
+      category,
+      sizes,
+      price,
+      discountPrice,
+      images,
+      id: product._id,
+    });
   };
 
   return (
@@ -128,6 +140,13 @@ const EditMerch = ({ mobileview }) => {
             <input
               defaultValue={product.price}
               onChange={(e) => setPrice(parseInt(e.target.value))}
+            />
+          </div>
+          <div>
+            <label>Discount Price</label>
+            <input
+              defaultValue={product.discountPrice}
+              onChange={(e) => setDiscountPrice(parseInt(e.target.value))}
             />
           </div>
           <div>

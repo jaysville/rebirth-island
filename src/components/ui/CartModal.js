@@ -11,9 +11,15 @@ const CartModal = ({ isopen, closecartmodal }) => {
   const cart = useSelector((state) => state.app.cart);
   const navigate = useNavigate();
 
+  // const totalPrice = cart
+  //   .reduce((acc, item) => {
+  //     return acc + item.price * item.quantity;
+  //   }, 0)
+  //   .toFixed(2);
+
   const totalPrice = cart
     .reduce((acc, item) => {
-      return acc + item.price * item.quantity;
+      return acc + item.discountPrice * item.quantity;
     }, 0)
     .toFixed(2);
 

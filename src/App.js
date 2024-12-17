@@ -26,6 +26,7 @@ import Shop from "./pages/Shop";
 import { GoBack } from "./components/ui/Buttons";
 import Account from "./pages/Account";
 import ResetPassword from "./pages/Reset-Password";
+import TextSlider from "./components/ui/TextSlider";
 
 function App() {
   const [mobileView, setMobileView] = useState(false);
@@ -115,7 +116,8 @@ function App() {
         openlogoutmodal={() => {
           setShowLogoutModal(true);
         }}
-      />
+      />{" "}
+      <TextSlider />
       <SideNav
         opensidenav={openSideNav}
         closesidenav={() => {
