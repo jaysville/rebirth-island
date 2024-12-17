@@ -7,7 +7,7 @@ const TextSlider = () => {
     <Container>
       <motion.div
         animate={{ x: ["100%", "-100%"] }}
-        transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+        transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
         style={{ display: "inline-block" }}
       >
         <span style={{ paddingRight: "100%" }}>
