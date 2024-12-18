@@ -7,11 +7,11 @@ const TextSlider = () => {
     <Container>
       <motion.div
         animate={{ x: ["100%", "-100%"] }}
-        transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+        transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
         style={{ display: "inline-block" }}
       >
-        <span style={{ paddingRight: "100%" }}>
-          Holiday Sales '24 . Discount on all merch. Valid till Wednesday, 25th
+        <span style={{ paddingRight: "50%" }}>
+          Holiday Sales '24 . Discount on all merch. Valid till Tuesday, 24th
           December, 2024.
         </span>
       </motion.div>
