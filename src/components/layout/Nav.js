@@ -67,7 +67,7 @@ const Nav = ({ mobileview, opensidenav, opencartmodal, openlogoutmodal }) => {
       {mobileview && !onCheckoutPage && <Hamburger onClick={opensidenav} />}
       <a href="/">
         <Logo
-          src={`${process.env.PUBLIC_URL}/images/logo3.png`}
+          src={`${process.env.PUBLIC_URL}/images/Logo.png`}
           alt="logo"
           mobileview={mobileview}
           isAdmin={isAdmin}
@@ -169,17 +169,10 @@ const Style = styled.nav`
 
 const Logo = styled.img`
   width: 100px;
-  margin-top: 20px;
-  transform: ${(props) =>
-    props.mobileview
-      ? props.isAdmin
-        ? "translateX(-10px)"
-        : "translateX(23px)"
-      : "translateX(20px) "};
-
+  transform: ${(props) => (props.mobileview ? "scale(1.7)" : "scale(1.5)")}
+    translateX(15px);
   cursor: pointer;
 `;
-
 const AdminContainer = styled.div`
   font-weight: 500;
   /* transform: translateY(9px); */
