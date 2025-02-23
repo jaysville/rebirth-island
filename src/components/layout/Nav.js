@@ -151,12 +151,10 @@ const Style = styled.nav`
   display: flex;
   justify-content: space-between;
   font-size: 15px;
-  /* color: aliceblue; */
   background-color: white;
   position: fixed;
   z-index: 1000;
   width: 100%;
-  padding: 5px;
   top: 0;
   ul {
     display: flex;
@@ -169,8 +167,7 @@ const Style = styled.nav`
 
 const Logo = styled.img`
   width: 100px;
-  transform: ${(props) => (props.mobileview ? "scale(1.7)" : "scale(1.5)")}
-    translateX(15px);
+  transform: scale(1.5) translateX(20px);
   cursor: pointer;
 `;
 const AdminContainer = styled.div`
