@@ -3,6 +3,7 @@ import { MainBtn, ShopNowBtn } from "../ui/Buttons";
 import { useSelector } from "react-redux";
 import Banner from "../../assets/banner2.JPG";
 import Welcome from "../../assets/welcome.PNG";
+import Slider from "react-slick";
 
 const Landing = () => {
   const isAdmin = useSelector((state) => state.app.isAdmin);

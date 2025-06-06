@@ -1,3 +1,4 @@
+import { Grid } from "@mui/material";
 import styled from "styled-components";
 
 const AboutUs = () => {
@@ -11,15 +12,27 @@ const AboutUs = () => {
         idea: to craft simple, high-quality, stylish apparel that makes you feel
         good.
       </p>
-      <h3>Our Mission</h3>
-      <p>
-        To design and produce clothing that:
-        <ul>
-          <li>Celebrates individuality</li>
-          <li>Embraces sustainability</li>
-          <li>Fosters community</li>
-        </ul>
-      </p>
+      <Grid container>
+        <Grid size={{ md: 5, xs: 12 }} order={{ xs: 1, md: 2 }}>
+          <h3>Our Mission</h3>
+          <div className="text-container">
+            To design and produce clothing that:
+            <ul>
+              <li>Celebrates individuality</li>
+              <li>Embraces sustainability</li>
+              <li>Fosters community</li>
+            </ul>
+          </div>
+        </Grid>
+        <Grid
+          size={{ md: 5, xs: 12 }}
+          order={{ xs: 1, md: 2 }}
+          className="img-container"
+        >
+          <img src="/images/MV4.JPG" alt="poster" />
+        </Grid>
+      </Grid>
+
       <h3>Our Story</h3>
       <p>
         Rebirth Island was founded in 2022 by Oyegbola Mayowa, a design
@@ -57,6 +70,7 @@ export default AboutUs;
 
 const Style = styled.div`
   padding: 50px;
+  font-size: 14px;
   @media (max-width: 900px) {
     padding: 50px 20px;
   }
@@ -66,6 +80,14 @@ const Style = styled.div`
     li {
       padding: 3px;
     }
+  }
+  .img-container {
+    display: grid;
+    place-items: center;
+  }
+  img {
+    width: 255px;
+    height: 319px;
   }
   h3 {
     color: #a55fa5;

@@ -211,7 +211,6 @@ function App() {
 export default App;
 
 const Container = styled.div`
-  margin-top: 0px;
-
+  margin-top: 100px;
   position: relative;
 `;
